@@ -27,6 +27,8 @@ import ReactGA from 'react-ga';
 
 function separateAndTrimList(list) {
 
+  if (!list) { return; }
+
   if (list.length === 0) {
     return [];
   }
@@ -100,13 +102,13 @@ class SchoolContent extends Component {
     // Trim the name, as it may have had spaces added for sorting.
     school.name = school.name.trim();
 
-    let cost = "";
+    let status = "";
     if (
-        (school.hasOwnProperty('cost'))
-        && (school.cost.length > 0)
-        && (school.cost !== "-")
+        (school.hasOwnProperty('status'))
+        && (school.status.length > 0)
+        && (school.status !== "-")
        ) {
-      cost = <BasicField value={school.cost} heading="Cost" />
+      status = <BasicField value={school.status} heading="Status" />
     }
 
     let courseLength = "";
@@ -189,7 +191,7 @@ class SchoolContent extends Component {
 
     let locations = "";
     let locationString = "";
-    if (locationsList.length > 0) {
+    if (locationsList && (locationsList.length > 0)) {
       locationString = locationsList.join(", ");
       let locationItems = locationsList.map((item, index) => {
         return (
@@ -205,7 +207,7 @@ class SchoolContent extends Component {
     }
 
     let technologies = "";
-    if (technologiesList.length > 0) {
+    if (technologiesList && (technologiesList.length > 0)) {
       let techItems = technologiesList.map((item, index) => {
             return (
               <Chip
@@ -293,7 +295,7 @@ class SchoolContent extends Component {
             {school.additionalInfo}
           </Typography>
 
-          {cost}
+          {status}
 
           {courseLength}
 

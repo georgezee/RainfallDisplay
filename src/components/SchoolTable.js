@@ -69,21 +69,6 @@ const columns = [
     }
   },
   {
-    name: "cities",
-    label: "Locations",
-    options: {
-      viewColumns: false,
-      filter: true,
-      display: false,
-      sort: false,
-      customBodyRender: (cities) => {
-        return cities.map( (val, key) => {
-            return val;
-        });
-      },
-    }
-  },
-  {
     name: "free",
     label: "Free",
     options: {
@@ -93,8 +78,8 @@ const columns = [
     }
   },
   {
-    name: "cost",
-    label: "Cost",
+    name: "status",
+    label: "Status",
     options: {
       filter: false,
       sort: true,
@@ -260,14 +245,12 @@ class SchoolTable extends Component {
 
       snapshot.forEach(function(school) {
         let schoolRow = school.val()
-        // Convert cities row from string to array, to allow proper filtering.
-        schoolRow.cities = schoolRow.cities.split(",").map(item => item.trim());
 
         //Parse line breaks in certain fields.
-        if (schoolRow.additionalInfo.length > 0) {
+        if (schoolRow.additionalinfo && (schoolRow.additionalInfo.length > 0)) {
           schoolRow.additionalInfo = schoolRow.additionalInfo.split('\n').map((item, i) => <span key={i}>{item}<br/></span>);
         }
-        if (schoolRow.employmentAssistance.length > 0) {
+        if (schoolRow.employmentAssistance && (schoolRow.employmentAssistance.length > 0)) {
           schoolRow.employmentAssistance = schoolRow.employmentAssistance.split('\n').map((item, i) => <span key={i}>{item}<br/></span>);
         }
 
