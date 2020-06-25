@@ -1,16 +1,14 @@
-# South African Code Schools
+# The Thing library
 
-This project lists known programs available in South Africa that teach coding. Our goal is to help aspiring students match with available and relevant courses.
+This project allows neighbours to share things.
 
-This is a [Codebridge](https://codebridge.org.za/) community website. All organisation is conducted on the [ZATech](https://zatech.github.io/) slack workspace on the channel [#codeschooldirectory](https://zatech.slack.com/messages/CGT76NYK1/), where all are welcome.
+This is a [Codebridge](https://codebridge.org.za/) community website. It is an adaptation of the https://codeschooldirectory.co.za project.
 
 ## Live Website
 
-The website is running live here: https://codeschooldirectory.co.za
+The website is running live here: TBC
 
-The data is stored in this Google Sheets: https://docs.google.com/spreadsheets/d/1Qrgw91Vod2bPmH1OlDMBqGJG2DF5XGZnIGz_Lc_9PvQ/edit#gid=0
-
-All data is pushed from the Google Sheet to a Firebase Realtime Database on every change. The changes are reflected on the website within 1-2 seconds.
+The data is stored in this Google Sheets: TBC
 
 Interested in starting your own directory? [Read more here](create-your-own-directory.md).
 
@@ -18,11 +16,11 @@ Interested in starting your own directory? [Read more here](create-your-own-dire
 
 1. Clone the repository:
 ```
-git clone https://github.com/ChrisOwen101/SouthAfricanCodeSchools.git
+git clone https://github.com/georgezee/ThingLibrary.git
 ```
 2. Change into the cloned folder
 ```
-cd SouthAfricanCodeSchools
+cd ThingLibrary
 ```
 3. Download all the project dependencies (will take a while):
 ```
