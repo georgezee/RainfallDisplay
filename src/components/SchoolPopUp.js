@@ -42,7 +42,7 @@ class SchoolPopUp extends Component {
           style={{textAlign:"center", width:"100%"}}
           onClick={this.handleScroll}
         >
-          See Other Schools
+          See Other Items
           <DownIcon/>
         </Button>
         <DialogActions>

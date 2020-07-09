@@ -22,6 +22,7 @@ import Email from "./fields/Email";
 import Stipend from "./fields/Stipend";
 import BusinessType from "./fields/BusinessType";
 import Website from "./fields/Website";
+import ItemPhoto from "./fields/ItemPhoto";
 import MetaTags from 'react-meta-tags';
 import ReactGA from 'react-ga';
 
@@ -111,22 +112,22 @@ class SchoolContent extends Component {
       status = <BasicField value={school.status} heading="Status" />
     }
 
-    let courseLength = "";
+    let dueBack = "";
     if (
-        (school.hasOwnProperty('courseLengthExtended'))
-        && (school.courseLengthExtended.length > 0)
-        && (school.courseLengthExtended !== "-")
+        (school.hasOwnProperty('dueBackExtended'))
+        && (school.dueBackExtended.length > 0)
+        && (school.dueBackExtended !== "-")
        ) {
-      courseLength = <BasicField
-                      value={school.courseLengthExtended}
+      dueBack = <BasicField
+                      value={school.dueBackExtended}
                       heading="Course Length"
                       tooltip="The length of courses may depend on factors such as full time/part time, program scope, internships and work experience."
                     />
     }
 
-    let acceptanceRequirements = "";
-    if (school.hasOwnProperty('acceptanceRequirements') && school.acceptanceRequirements.length > 0) {
-      acceptanceRequirements = <BasicField value={school.acceptanceRequirements} heading="Acceptance Requirements" />
+    let borrowingPeriod = "";
+    if (school.hasOwnProperty('borrowingPeriod') && school.borrowingPeriod.length > 0) {
+      borrowingPeriod = <BasicField value={school.borrowingPeriod} heading="Borrowing Period" />
     }
 
     let scholarships = "";
@@ -134,14 +135,14 @@ class SchoolContent extends Component {
       scholarships = <BasicField value={school.scholarships} heading="Scholarships" />
     }
 
-    let numberOfGraduates = "";
-    if (school.hasOwnProperty('numberOfGraduates') && school.numberOfGraduates.toString().length > 0) {
-      numberOfGraduates = <BasicField value={school.numberOfGraduates} heading="# Graduates" />
+    let description = "";
+    if (school.hasOwnProperty('description') && school.description.toString().length > 0) {
+      description = <BasicField value={school.description} heading="Description" />
     }
 
-    let graduationRate = "";
-    if (school.hasOwnProperty('graduationRate') && school.graduationRate.toString().length > 0) {
-      graduationRate = <BasicField value={school.graduationRate} heading="Graduation Rate" />
+    let careInstructions = "";
+    if (school.hasOwnProperty('careInstructions') && school.careInstructions.toString().length > 0) {
+      careInstructions = <BasicField value={school.careInstructions} heading="Care Instructions" />
     }
 
     let employmentRate = "";
@@ -159,11 +160,11 @@ class SchoolContent extends Component {
       employmentAssistance = <BasicField value={school.employmentAssistance} heading="Employment Assistance" />
     }
 
-    let accreditation = "";
-    if (school.hasOwnProperty('accreditation') && school.accreditation.length > 0) {
-      accreditation = <BasicField
-                        value={school.accreditation}
-                        heading="Accreditation"
+    let owner = "";
+    if (school.hasOwnProperty('owner') && school.owner.length > 0) {
+      owner = <BasicField
+                        value={school.owner}
+                        heading="Owner"
                         tooltip="Accredited courses have to meet particular standards and are recognized by official bodies."
                       />
     }
@@ -271,13 +272,13 @@ class SchoolContent extends Component {
           <meta name="description" content={metaDescription} />
           <meta property="og:description" content={metaDescription} />
           <meta property="og:title" content={metaTitle} />
-          <meta property="og:image" content={school.logo} />
+          <meta property="og:image" content={school.photo} />
         </MetaTags>
 
         <Card className={classes.card} style={cardStyle}>
         <CardHeader
           avatar={
-            <Avatar aria-label="School Info" src={school.logo} className={classes.avatar} style={{ borderRadius: 0 }}></Avatar>
+            <Avatar aria-label="School Info" src={school.photo} className={classes.avatar} style={{ borderRadius: 0 }}></Avatar>
           }
           title={schoolTitle}
           subheader={yearEstablished}
@@ -286,7 +287,7 @@ class SchoolContent extends Component {
         />
         <CardMedia
           className={classes.media}
-          image={school.logo}
+          image={school.photo}
           title={school.name}
         />
 
@@ -295,23 +296,28 @@ class SchoolContent extends Component {
             {school.additionalInfo}
           </Typography>
 
+
+          <ItemPhoto
+            url={school.photo}
+          />
+
           {status}
 
-          {courseLength}
+          {dueBack}
 
-          {acceptanceRequirements}
+          {borrowingPeriod}
 
           {scholarships}
 
           {courseStart}
 
-          {numberOfGraduates}
-          {graduationRate}
+          {description}
+          {careInstructions}
 
           {employmentAssistance}
           {employmentRate}
 
-          {accreditation}
+          {owner}
           {accreditationExtended}
 
           {industryPartners}

@@ -42,8 +42,8 @@ const columns = [
     }
   },
   {
-    name: "logo",
-    label: "Logo",
+    name: "photo",
+    label: "Photo",
     options: {
       filter: false,
       sort: false,
@@ -89,16 +89,16 @@ const columns = [
     }
   },
   {
-    name: "courseLength",
-    label: "Duration (Months)",
+    name: "dueBack",
+    label: "Due Back",
     options: {
       filter: false,
       sort: true
     }
   },
   {
-    name: "accreditation",
-    label: "Accreditation",
+    name: "owner",
+    label: "Owner",
     options: {
       filter: false,
       sort: true
@@ -132,8 +132,8 @@ const columns = [
     }
   },
   {
-    name: "acceptanceRequirements",
-    label: "Acceptance Requirements",
+    name: "borrowingPeriod",
+    label: "Borrowing Period",
     options: {
       sort: false,
       filter: false,
@@ -163,6 +163,11 @@ class SchoolTable extends Component {
       showLiked: false,
       selectedSchool: {}
      };
+  }
+
+  componentDidMount() {
+    const img = new Image();
+    img.src = "http://localhost:3000/images/logo-code-school-directory-full.png";
   }
 
   likeClick(school) {
