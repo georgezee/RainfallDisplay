@@ -1,14 +1,16 @@
-# The Thing library
+# The Rain Network
 
-This project allows neighbours to share things.
+This project visualizes rainfall data for the Hout Bay Rainfall community website.
 
-This is a [Codebridge](https://codebridge.org.za/) community website. It is an adaptation of the https://codeschooldirectory.co.za project.
+Trello Board: https://trello.com/b/nQzzjvpb/rainfall-hout-bay
+
+It is an adaptation of the https://codeschooldirectory.co.za project, and is a [Codebridge](https://codebridge.org.za/) community project.
 
 ## Live Website
 
-The website is running live here: TBC
+We're still thinking of a great new domain name for our rainfall community site, but the temporary home is at: https://rainfall-data-536ee.firebaseapp.com/
 
-The data is stored in this Google Sheets: TBC
+Test data is stored in this Google Sheets: https://docs.google.com/spreadsheets/d/1XBpic3g_pt1CnjbJ-hCue5I84LR7oJnNNdCZvn968w8/edit?usp=sharing
 
 Interested in starting your own directory? [Read more here](create-your-own-directory.md).
 
@@ -16,11 +18,11 @@ Interested in starting your own directory? [Read more here](create-your-own-dire
 
 1. Clone the repository:
 ```
-git clone https://github.com/georgezee/ThingLibrary.git
+git clone https://github.com/georgezee/RainfallDisplay.git
 ```
 2. Change into the cloned folder
 ```
-cd ThingLibrary
+cd RainfallDisplay
 ```
 3. Download all the project dependencies (will take a while):
 ```

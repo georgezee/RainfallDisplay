@@ -24,4 +24,4 @@ At a high level, the following steps are needed:
 8. Setup analytics, add to .env file.
 9. Update design/logo for site.
 10. Add/remove columns in code and spreadsheet.
-10. Setup form for programs to update their own data (optional).
+11. Setup form for programs to update their own data (optional).
