@@ -19,37 +19,37 @@ const columns = [
     label: "Name",
     options: {
       filter: false,
-      sort: true,
+      sort: false,
       sortDirection: "asc",
       viewColumns: false,
       customBodyRender: (value, tableMeta, updateValue) => {
         return (
           <div style={ {lineHeight: '30px'} }>
-            <Avatar aria-label="School Info" src={tableMeta.rowData[2]} className="avatar" style={logoStyle}></Avatar>
+            {/* <Avatar aria-label="School Info" src={tableMeta.rowData[2]} className="avatar" style={logoStyle}></Avatar> */}
             {value}
           </div>
         );
       }
     }
   },
-  {
-    name: "website",
-    label: "Website",
-    options: {
-      filter: false,
-      sort: false,
-      display: "excluded"
-    }
-  },
-  {
-    name: "photo",
-    label: "Photo",
-    options: {
-      filter: false,
-      sort: false,
-      display: "excluded"
-    }
-  },
+  // {
+  //   name: "website",
+  //   label: "Website",
+  //   options: {
+  //     filter: false,
+  //     sort: false,
+  //     display: "excluded"
+  //   }
+  // },
+  // {
+  //   name: "photo",
+  //   label: "Photo",
+  //   options: {
+  //     filter: false,
+  //     sort: false,
+  //     display: "excluded"
+  //   }
+  // },
   {
     name: "key",
     label: "Key",
@@ -59,96 +59,96 @@ const columns = [
       display: "excluded"
     }
   },
-  {
-    name: "locations",
-    label: "Locations",
-    options: {
-      display: true,
-      filter: false,
-      sort: false
-    }
-  },
-  {
-    name: "free",
-    label: "Free",
-    options: {
-      filter: true,
-      sort: false,
-      display: "excluded"
-    }
-  },
-  {
-    name: "status",
-    label: "Status",
-    options: {
-      filter: false,
-      sort: true,
-      customBodyRender: (value, tableMeta, updateValue) => {
-        return value === 0 ? "-" : value;
-      }
-    }
-  },
-  {
-    name: "dueBack",
-    label: "Due Back",
-    options: {
-      filter: false,
-      sort: true
-    }
-  },
-  {
-    name: "owner",
-    label: "Owner",
-    options: {
-      filter: false,
-      sort: true
-    }
-  },
-  {
-    name: "accreditationFilter",
-    label: "Accreditation",
-    options: {
-      viewColumns: false,
-      filter: true,
-      display: false
-    }
-  },
-  {
-    name: "stipend",
-    label: "Stipend",
-    options: {
-      sort: false,
-      filter: false,
-      display: false
-    }
-  },
-  {
-    name: "stipendFilter",
-    label: "Stipend",
-    options: {
-      viewColumns: false,
-      filter: true,
-      display: false
-    }
-  },
-  {
-    name: "borrowingPeriod",
-    label: "Borrowing Period",
-    options: {
-      sort: false,
-      filter: false,
-      display: false
-    }
-  },
-  {
-    name: "technologies",
-    label: "Technologies",
-    options: {
-      sort: false,
-      filter: false,
-      display: false
-    }
-  },
+  // {
+  //   name: "locations",
+  //   label: "Locations",
+  //   options: {
+  //     display: true,
+  //     filter: false,
+  //     sort: false
+  //   }
+  // },
+  // {
+  //   name: "free",
+  //   label: "Free",
+  //   options: {
+  //     filter: true,
+  //     sort: false,
+  //     display: "excluded"
+  //   }
+  // },
+  // {
+  //   name: "status",
+  //   label: "Status",
+  //   options: {
+  //     filter: false,
+  //     sort: true,
+  //     customBodyRender: (value, tableMeta, updateValue) => {
+  //       return value === 0 ? "-" : value;
+  //     }
+  //   }
+  // },
+  // {
+  //   name: "dueBack",
+  //   label: "Due Back",
+  //   options: {
+  //     filter: false,
+  //     sort: true
+  //   }
+  // },
+  // {
+  //   name: "owner",
+  //   label: "Owner",
+  //   options: {
+  //     filter: false,
+  //     sort: true
+  //   }
+  // },
+  // {
+  //   name: "accreditationFilter",
+  //   label: "Accreditation",
+  //   options: {
+  //     viewColumns: false,
+  //     filter: true,
+  //     display: false
+  //   }
+  // },
+  // {
+  //   name: "stipend",
+  //   label: "Stipend",
+  //   options: {
+  //     sort: false,
+  //     filter: false,
+  //     display: false
+  //   }
+  // },
+  // {
+  //   name: "stipendFilter",
+  //   label: "Stipend",
+  //   options: {
+  //     viewColumns: false,
+  //     filter: true,
+  //     display: false
+  //   }
+  // },
+  // {
+  //   name: "borrowingPeriod",
+  //   label: "Borrowing Period",
+  //   options: {
+  //     sort: false,
+  //     filter: false,
+  //     display: false
+  //   }
+  // },
+  // {
+  //   name: "technologies",
+  //   label: "Technologies",
+  //   options: {
+  //     sort: false,
+  //     filter: false,
+  //     display: false
+  //   }
+  // },
 ];
 
 
@@ -281,6 +281,7 @@ class SchoolTable extends Component {
           popUpOpen: true,
         });
       }
+      console.log(list);
       this.setState({ schools: list, isLoading: false });
     }.bind(this));
   }
