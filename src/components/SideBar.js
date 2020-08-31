@@ -59,20 +59,20 @@ class SideBar extends Component {
               <ListItemIcon><FavoriteIcon /></ListItemIcon>
               <ListItemText primary="Show Favourites" />
           </ListItem>
-          <Link href="https://github.com/ChrisOwen101/SouthAfricanCodeSchools">
+          <Link href="https://github.com/georgezee/RainfallDisplay">
             <ListItem button key="github">
               <ListItemIcon><CodeIcon /></ListItemIcon>
               <ListItemText primary="Get the Code!" />
             </ListItem>
           </Link>
-          <Link href="https://docs.google.com/forms/d/e/1FAIpQLSciBsoj5AH6RKc0-DAh_x3QAggP6bCkCFYdCN3Tdu4rKEmJlw/viewform">
-            <ListItem button key="add-school">
+          <Link href="mailto:info@springfisher.com">
+            <ListItem button key="join">
               <ListItemIcon><EditIcon /></ListItemIcon>
-              <ListItemText primary="Add a School" />
+              <ListItemText primary="Join" />
             </ListItem>
           </Link>
           <Divider />
-          <Link href="mailto:info@codeschooldirectory.co.za">
+          <Link href="mailto:info@springfisher.com">
             <ListItem button key="contact-us">
               <ListItemIcon><MailIcon /></ListItemIcon>
               <ListItemText primary="Contact Us" />

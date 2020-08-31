@@ -5,7 +5,7 @@ import License from "./License";
 const Footer = () => {
   return (
     <div id="footer">
-      <Link href="https://github.com/ChrisOwen101/SouthAfricanCodeSchools">
+      <Link href="https://github.com/georgezee/RainfallDisplay">
         &lt; View the source on Github /&gt;
       </Link>
       <License />
