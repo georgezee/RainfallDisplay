@@ -233,12 +233,69 @@ class SchoolTable extends Component {
     });
   }
 
-  componentWillMount() {
+  loadSiteData() {
     let messagesRef = fire
       .database()
-      .ref()
+      .ref("sites")
       .orderByKey()
-      .limitToLast(100);
+      .limitToLast(10000);
+
+    messagesRef.on("value", function(siteData) {
+      // We have received the data from Firebase.
+      // Now we make any transformations needed before passing to the data table.
+      let list = [];
+
+      siteData.forEach(function(site) {
+        let siteRow = site.val()
+        siteRow.geometry = [siteRow.latitude, siteRow.longitude];
+        list[siteRow.siteid] = siteRow;
+      });
+
+      console.log(list);
+      this.setState({ sites: list });
+
+      this.calculateRain();
+    }.bind(this));
+  }
+
+  calculateRain() {
+    if (this.state.rainData && this.state.sites) {
+
+      // Calculate the annual rain:
+
+      let rainData = this.state.rainData;
+      let newSites = this.state.sites;
+      //console.log(rainData);
+      rainData.forEach(function(row) {
+        //console.log(row);
+        let siteID = parseInt(row['key']);
+        let rainDate = new Date(row['name']);
+        let rainAmount = row['rainfall(Mm)'];
+        let currentYear = 2019;
+
+        if (rainDate.getFullYear() === currentYear) {
+          if (newSites[siteID].annualTotal) {
+            newSites[siteID].annualTotal += rainAmount;
+          } else {
+            newSites[siteID].annualTotal = rainAmount;
+          }
+        }
+      });
+console.log("setting sites");
+console.log(newSites);
+      this.setState({sites : newSites});
+
+    } else {
+      console.log("data not loaded");
+    }
+  }
+
+  loadRainData() {
+    let messagesRef = fire
+    .database()
+    .ref('rainData')
+    .orderByKey()
+    .limitToLast(10000);
 
     messagesRef.on("value", function(snapshot) {
       // We have received the data from Firebase.
@@ -249,42 +306,52 @@ class SchoolTable extends Component {
       var favorites = JSON.parse(localStorage.getItem('csd-likes')) || [];
       let highlightRow = null;
 
+      let i = 0;
+
       snapshot.forEach(function(school) {
         let schoolRow = school.val()
 
-        //Parse line breaks in certain fields.
-        if (schoolRow.additionalinfo && (schoolRow.additionalInfo.length > 0)) {
-          schoolRow.additionalInfo = schoolRow.additionalInfo.split('\n').map((item, i) => <span key={i}>{item}<br/></span>);
-        }
-        if (schoolRow.employmentAssistance && (schoolRow.employmentAssistance.length > 0)) {
-          schoolRow.employmentAssistance = schoolRow.employmentAssistance.split('\n').map((item, i) => <span key={i}>{item}<br/></span>);
-        }
+        // //Parse line breaks in certain fields.
+        // if (schoolRow.additionalinfo && (schoolRow.additionalInfo.length > 0)) {
+        //   schoolRow.additionalInfo = schoolRow.additionalInfo.split('\n').map((item, i) => <span key={i}>{item}<br/></span>);
+        // }
+        // if (schoolRow.employmentAssistance && (schoolRow.employmentAssistance.length > 0)) {
+        //   schoolRow.employmentAssistance = schoolRow.employmentAssistance.split('\n').map((item, i) => <span key={i}>{item}<br/></span>);
+        // }
 
-        // Apply favourites from localstorage to data.
-        let index = favorites.indexOf(schoolRow.key);
-        if (index === -1) {
-          schoolRow.liked = 'false';
-        } else {
-          schoolRow.liked = 'true';
-        }
-        // If the path matches this school's key, display it as the highlighted item.
-        if (window.location.pathname === "/" + schoolRow.key) {
-          // Add a space in front of the name so it appears as the first item.
-          schoolRow.name = " " + schoolRow.name;
-          highlightRow = schoolRow;
-        }
+        // // Apply favourites from localstorage to data.
+        // let index = favorites.indexOf(schoolRow.key);
+        // if (index === -1) {
+        //   schoolRow.liked = 'false';
+        // } else {
+        //   schoolRow.liked = 'true';
+        // }
+        // // If the path matches this school's key, display it as the highlighted item.
+        // if (window.location.pathname === "/" + schoolRow.key) {
+        //   // Add a space in front of the name so it appears as the first item.
+        //   schoolRow.name = " " + schoolRow.name;
+        //   highlightRow = schoolRow;
+        // }
         list.push(schoolRow);
       });
 
-      if (highlightRow !== null) {
-        this.setState({
-          selectedSchool: highlightRow,
-          popUpOpen: true,
-        });
-      }
-      console.log(list);
-      this.setState({ schools: list, isLoading: false });
+      // if (highlightRow !== null) {
+      //   this.setState({
+      //     selectedSchool: highlightRow,
+      //     popUpOpen: true,
+      //   });
+      // }
+
+      this.setState({ rainData: list, isLoading: false });
+
+      this.calculateRain();
+
     }.bind(this));
+  }
+
+  componentWillMount() {
+    this.loadRainData();
+    this.loadSiteData();
   }
 
   onPopUpClose = event => {
@@ -323,7 +390,7 @@ class SchoolTable extends Component {
         return (
           <TableRow>
             <TableCell colSpan={colSpan}>
-              <ExpandableRow school={this.state.schools[rowMeta.dataIndex]} likeClick={this.likeClick.bind(this)} />
+              <ExpandableRow school={this.state.sites[rowMeta.dataIndex]} likeClick={this.likeClick.bind(this)} />
             </TableCell>
           </TableRow>
         );
@@ -344,6 +411,9 @@ class SchoolTable extends Component {
     const style = {
       margin: "16px"
     };
+
+    console.log("oooo");
+    console.log(this.state.sites);
 
     return (
       <div id='tableContainer'>
