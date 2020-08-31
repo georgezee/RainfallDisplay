@@ -9,6 +9,7 @@ import AppTitleBar from "./AppTitleBar";
 import ToolbarExtra from "./ToolbarExtra";
 import Avatar from '@material-ui/core/Avatar';
 import SchoolPopUp from "./SchoolPopUp";
+import AreaMap from "./AreaMap";
 
 const logoStyle = { borderRadius: 4, float: 'left', height: '30px', width: '30px', position: 'relative', left: '-15px' }
 
@@ -346,7 +347,9 @@ class SchoolTable extends Component {
 
     return (
       <div id='tableContainer'>
-        <SchoolPopUp
+        <AreaMap sitesData={this.state.sites}/>
+
+        {/* <SchoolPopUp
           open={this.state.popUpOpen}
           school={this.state.selectedSchool}
           onClose={this.onPopUpClose}
@@ -358,7 +361,7 @@ class SchoolTable extends Component {
           data={this.state.schools}
           columns={columns}
           options={options}
-        />
+        /> */}
       </div>
     );
   }

@@ -29,11 +29,9 @@ const history = createBrowserHistory();
 const App = () => (
   <MuiThemeProvider theme={muiTheme}>
     <div>
-      <AreaMap/>
-
       <Grid container>
         <Grid item xs={12}>
-          {/* <SchoolTable history={history} /> */}
+          <SchoolTable history={history} />
         </Grid>
         <Grid item xs={3} />
       </Grid>

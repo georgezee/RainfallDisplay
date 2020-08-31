@@ -1,10 +1,8 @@
-
-
 import React, { Component } from 'react'
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import SiteMarker from "./SiteMarker";
 
-
-export default class SimpleExample extends Component {
+export default class AreaMap extends Component {
   //-34.0428655, 18.3626059
   state = {
     lat: -34.0315,
@@ -24,6 +22,7 @@ export default class SimpleExample extends Component {
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <SiteMarker sites={this.props.sitesData}/>
         </Map>
       </div>
       )
