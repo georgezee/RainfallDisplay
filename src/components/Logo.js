@@ -18,8 +18,8 @@ const Logo = props => {
     return (
       <div id="logo">
         <img
-          src="./images/logo-text.png"
-          alt="the Code School Directory South Africa logo"
+          src="./images/logo-hout-bay-rainfall-full.png"
+          alt="the Rainfall Network logo"
           style={style}
         />
       </div>
