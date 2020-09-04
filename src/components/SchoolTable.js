@@ -9,6 +9,7 @@ import AppTitleBar from "./AppTitleBar";
 import ToolbarExtra from "./ToolbarExtra";
 import Avatar from '@material-ui/core/Avatar';
 import SchoolPopUp from "./SchoolPopUp";
+import Logo from "./Logo";
 import AreaMap from "./AreaMap";
 
 const logoStyle = { borderRadius: 4, float: 'left', height: '30px', width: '30px', position: 'relative', left: '-15px' }
@@ -417,6 +418,8 @@ console.log(newSites);
 
     return (
       <div id='tableContainer'>
+        <Logo/>
+        <br/>
         <AreaMap sitesData={this.state.sites}/>
 
         {/* <SchoolPopUp
