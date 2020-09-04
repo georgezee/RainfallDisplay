@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import SchoolPopUp from "./SchoolPopUp";
 import Logo from "./Logo";
 import AreaMap from "./AreaMap";
+import YearChart from "./YearChart";
 
 const logoStyle = { borderRadius: 4, float: 'left', height: '30px', width: '30px', position: 'relative', left: '-15px' }
 
@@ -262,8 +263,9 @@ class SchoolTable extends Component {
   calculateRain() {
     if (this.state.rainData && this.state.sites) {
 
-      // Calculate the annual rain:
+      // Clean data (skip sites that didn't have entries throughout the period)
 
+      // Calculate the annual rain:
       let rainData = this.state.rainData;
       let newSites = this.state.sites;
       //console.log(rainData);
@@ -285,6 +287,42 @@ class SchoolTable extends Component {
 console.log("setting sites");
 console.log(newSites);
       this.setState({sites : newSites});
+
+      // Calculate the monthly totals
+      let monthlyData = [];
+      let monthlyArray = [];
+      rainData.forEach(function(row) {
+        //console.log(row);
+        //let siteID = parseInt(row['key']);
+        let rainDate = new Date(row['name']);
+        let rainAmount = row['rainfall(Mm)'];
+        //let currentYear = 2019;
+
+        let currentMonth = rainDate.getMonth();
+
+        if (monthlyData[currentMonth]) {
+          //monthlyData[currentMonth] += rainAmount;
+          monthlyData[currentMonth].rainMM += rainAmount;
+        } else {
+          monthlyData[currentMonth] = {
+            name : currentMonth,
+            rainMM : rainAmount
+          };
+
+        }
+        // if (rainDate.getFullYear() === currentYear) {
+        //   if (newSites[siteID].annualTotal) {
+        //     newSites[siteID].annualTotal += rainAmount;
+        //   } else {
+        //     newSites[siteID].annualTotal = rainAmount;
+        //   }
+        // }
+      });
+      monthlyData.forEach(function (item) {
+        monthlyArray.push(item);
+      });
+      console.log(monthlyArray);
+      this.setState({monthlyData : monthlyArray});
 
     } else {
       console.log("data not loaded");
@@ -421,7 +459,8 @@ console.log(newSites);
         <Logo/>
         <br/>
         <AreaMap sitesData={this.state.sites}/>
-
+        <br/>
+        <YearChart monthlyData={this.state.monthlyData}/>
         {/* <SchoolPopUp
           open={this.state.popUpOpen}
           school={this.state.selectedSchool}
