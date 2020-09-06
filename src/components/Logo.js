@@ -7,8 +7,8 @@ const Logo = props => {
     return (
       <div id="menu-logo">
         <img
-          src="./images/logo-code-school-directory-full.png"
-          alt="Code School Directory Menu"
+          src="./images/logo-hout-bay-rainfall-full.png"
+          alt="Rainfall Network Menu"
           style={style}
         />
       </div>
