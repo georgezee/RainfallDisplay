@@ -13,7 +13,6 @@ import Logo from "./Logo";
 import AreaMap from "./AreaMap";
 import YearChart from "./YearChart";
 import crossfilter from "crossfilter2";
-import Button from "@material-ui/core/Button";
 
 const logoStyle = { borderRadius: 4, float: 'left', height: '30px', width: '30px', position: 'relative', left: '-15px' }
 
@@ -169,6 +168,9 @@ class SchoolTable extends Component {
       selectedSchool: {},
       currentSiteID : 112
      };
+     // Fetch the necessary data.
+     this.loadRainData();
+     this.loadSiteData();
   }
 
   componentDidMount() {
@@ -186,18 +188,11 @@ class SchoolTable extends Component {
 
   getSiteByName(vanityName) {
     let matchingSite = this.state.sites.filter((site, index) => {return site.vanityName == vanityName} )
-    console.log("xxx" + matchingSite[0].siteid);
     return matchingSite[0].siteid;
   }
 
   changeSite(vanityName) {
-    console.log("vvvv" + vanityName);
-
     let siteID = this.getSiteByName(vanityName);
-    console.log("www" + siteID)
-    //let oldSite = this.state.currentSiteID;
-    //alert("changed");
-    //this.setState({currentSiteID: ++oldSite});
     this.setState({currentSiteID: siteID});
     this.calculateRain();
   }
@@ -301,11 +296,12 @@ class SchoolTable extends Component {
 
       // Clean data (skip sites that didn't have entries throughout the period)
 
-      // Calculate the annual rain:
       let rainData = this.state.rainData;
       let newSites = this.state.sites;
 
       newSites = this.clearSitesRaindata(newSites);
+
+      // Calculate the annual rain
       rainData.forEach(function(row) {
         let siteID = parseInt(row['key']);
         let rainDate = new Date(row['name']);
@@ -324,6 +320,10 @@ class SchoolTable extends Component {
 
       // Use the crossfilter tool to group rain data by site.
       let crossdata = crossfilter(rainData);
+
+      let siteID = this.state.currentSiteID;
+      crossdata.dimension(function(d) {return d.key}).filter(siteID);
+
       let siteTotal = crossdata.dimension(function(d) {
         let theDate = new Date(d['name']);
         //return JSON.stringify ( { year: theDate.getFullYear() , month: theDate.toLocaleString('default', { month: 'short' }) } ) ;
@@ -410,11 +410,6 @@ class SchoolTable extends Component {
     }.bind(this));
   }
 
-  componentWillMount() {
-    this.loadRainData();
-    this.loadSiteData();
-  }
-
   onPopUpClose = event => {
     this.setState({ popUpOpen: false });
   };
@@ -473,16 +468,12 @@ class SchoolTable extends Component {
       margin: "16px"
     };
 
-    console.log("oooo");
-    console.log(this.state.sites);
-
     return (
       <div id='tableContainer'>
         <Logo/>
         <br/>
         <AreaMap sitesData={this.state.sites} clickSite={this.changeSite.bind(this)}/>
         <br/>
-        <Button onClick={this.changeSite.bind(this)}>Change Site</Button>
         <YearChart monthlyData={this.state.monthlyData}/>
         {/* <SchoolPopUp
           open={this.state.popUpOpen}

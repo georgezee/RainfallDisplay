@@ -30,6 +30,7 @@ export default class SiteMarker extends Component {
           center={site.geometry}
           radius={this.calculateCircleSize(site.annualTotal)}
           onClick={() => this.clickSite(site.vanityName)}
+          key={index}
         >
           <MarkerPopup name={site.vanityName + " - " + site.annualTotal}/>
         </Circle>
