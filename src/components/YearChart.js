@@ -7,36 +7,6 @@ import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from 'r
 
 export default class YearChart extends Component {
 
-
-
-  data = [
-    {
-        "name": "Jan 2019",
-        "Product A": 3432,
-        "Procuct B": 2342
-    },
-    {
-        "name": "Feb 2019",
-        "Product A": 2342,
-        "Procuct B": 3246
-    },
-    {
-        "name": "Mar 2019",
-        "Product A": 4565,
-        "Procuct B": 4556
-    },
-    {
-        "name": "Apr 2019",
-        "Product A": 6654,
-        "Procuct B": 4465
-    },
-    {
-        "name": "May 2019",
-        "Product A": 8765,
-        "Procuct B": 4553
-    }
-]
-
 render() {
   let monthlyData = this.props.monthlyData;
   console.log(monthlyData);
@@ -48,7 +18,9 @@ render() {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="rainMM" stroke="#0095FF" />
+            <Line type="monotone" dataKey="2018" stroke="#0095FF" />
+            <Line type="monotone" dataKey="2019" stroke="#e79d1d" />
+            <Line type="monotone" dataKey="2020" stroke="#dd26e3" />
         </LineChart>
     )
 };

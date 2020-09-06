@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map, TileLayer } from 'react-leaflet'
 import SiteMarker from "./SiteMarker";
 
 export default class AreaMap extends Component {
@@ -16,13 +16,13 @@ export default class AreaMap extends Component {
         <Map
           center={[this.state.lat, this.state.lng]}
           zoom={this.state.zoom}
-          style={{ width: '800px', height: '800px'}}
+          style={{ width: '600px', height: '500px'}}
         >
           <TileLayer
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <SiteMarker sites={this.props.sitesData}/>
+          <SiteMarker sites={this.props.sitesData} clickSite={this.props.clickSite}/>
         </Map>
       </div>
       )

@@ -16,15 +16,20 @@ export default class SiteMarker extends Component {
     return radius;
   }
 
+  clickSite(name) {
+    console.log("site clicked::" + name);
+    this.props.clickSite(name);
+  }
+
   render() {
     const { sites } = this.props;
 
     if (sites) {
-
       const markers = sites.map((site, index) => (
         <Circle
           center={site.geometry}
           radius={this.calculateCircleSize(site.annualTotal)}
+          onClick={() => this.clickSite(site.vanityName)}
         >
           <MarkerPopup name={site.vanityName + " - " + site.annualTotal}/>
         </Circle>

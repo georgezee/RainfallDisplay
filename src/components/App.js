@@ -5,7 +5,6 @@ import Footer from "./Footer";
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import muiTheme from '../theme/muiTheme';
 import ReactGA from 'react-ga';
-import AreaMap from "./AreaMap";
 
 import { createBrowserHistory } from 'history';
 

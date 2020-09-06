@@ -12,6 +12,8 @@ import SchoolPopUp from "./SchoolPopUp";
 import Logo from "./Logo";
 import AreaMap from "./AreaMap";
 import YearChart from "./YearChart";
+import crossfilter from "crossfilter2";
+import Button from "@material-ui/core/Button";
 
 const logoStyle = { borderRadius: 4, float: 'left', height: '30px', width: '30px', position: 'relative', left: '-15px' }
 
@@ -164,13 +166,40 @@ class SchoolTable extends Component {
       isLoading: true,
       popUpOpen: false,
       showLiked: false,
-      selectedSchool: {}
+      selectedSchool: {},
+      currentSiteID : 112
      };
   }
 
   componentDidMount() {
     const img = new Image();
     img.src = "http://localhost:3000/images/logo-code-school-directory-full.png";
+  }
+
+  print_filter(f){
+    //var f=eval(filter);
+    if (typeof(f.length) != "undefined") {}else{}
+    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+    console.log("("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+  }
+
+  getSiteByName(vanityName) {
+    let matchingSite = this.state.sites.filter((site, index) => {return site.vanityName == vanityName} )
+    console.log("xxx" + matchingSite[0].siteid);
+    return matchingSite[0].siteid;
+  }
+
+  changeSite(vanityName) {
+    console.log("vvvv" + vanityName);
+
+    let siteID = this.getSiteByName(vanityName);
+    console.log("www" + siteID)
+    //let oldSite = this.state.currentSiteID;
+    //alert("changed");
+    //this.setState({currentSiteID: ++oldSite});
+    this.setState({currentSiteID: siteID});
+    this.calculateRain();
   }
 
   likeClick(school) {
@@ -260,6 +289,13 @@ class SchoolTable extends Component {
     }.bind(this));
   }
 
+  clearSitesRaindata(sitesData) {
+    sitesData.forEach(function(row) {
+      delete row.annualTotal;
+    });
+    return sitesData;
+  }
+
   calculateRain() {
     if (this.state.rainData && this.state.sites) {
 
@@ -269,6 +305,9 @@ class SchoolTable extends Component {
       let rainData = this.state.rainData;
       let newSites = this.state.sites;
       //console.log(rainData);
+
+
+      newSites = this.clearSitesRaindata(newSites);
       rainData.forEach(function(row) {
         //console.log(row);
         let siteID = parseInt(row['key']);
@@ -288,41 +327,166 @@ console.log("setting sites");
 console.log(newSites);
       this.setState({sites : newSites});
 
-      // Calculate the monthly totals
+      let crossdata = crossfilter(rainData);
+      console.log(crossdata.size());
+      console.log("^^^^aa");
+
+      let siteID = this.state.currentSiteID;
+      let oneSite = crossdata.dimension(function(d) {return d.key}).filter(siteID);
+
+      //let siteTotal = crossdata.dimension(function(d) {return (new Date(d['name']).getFullYear()) + '-'  + (new Date(d['name']).getMonth()) });
+
+      let siteTotal = crossdata.dimension(function(d) {
+        let theDate = new Date(d['name']);
+        //return JSON.stringify ( { year: theDate.getFullYear() , month: theDate.toLocaleString('default', { month: 'short' }) } ) ;
+        return JSON.stringify ( { year: theDate.getFullYear() , month: theDate.getMonth() } ) ;
+        //return (new Date(d['name']).getFullYear()) + '-'  + (new Date(d['name']).getMonth())
+      });
+
+this.print_filter(siteTotal);
+
+
+      // let siteTotalsGroup = siteTotal.group(); //.reduceSum(item => item['rainfall(Mm)']);
+      // this.print_filter(siteTotalsGroup);
+
+      // siteTotalsGroup.all().forEach(function(d) {
+      //   //parse the json string created above
+      //   d.key = JSON.parse(d.key);
+      // });
+
+      //let siteTotals = siteTotalsGroup.all();
+
+      let siteTotals = siteTotal.group().reduceSum(item => item['rainfall(Mm)']).all();
+      console.log(siteTotals);
+      this.print_filter(siteTotals);
+
+      // let mapData = siteTotals.map((item, index, arr) => {
+      //   console.log(item);
+      //   //console.log(index);
+      //   //console.log(arr);
+      //   let newKey = JSON.parse(item.key).year;
+      //   return {
+      //       newKey : item['value']
+      //     };
+
+      // });
+      // console.log(mapData);
+
       let monthlyData = [];
       let monthlyArray = [];
-      rainData.forEach(function(row) {
-        //console.log(row);
-        //let siteID = parseInt(row['key']);
-        let rainDate = new Date(row['name']);
-        let rainAmount = row['rainfall(Mm)'];
-        //let currentYear = 2019;
-
-        let currentMonth = rainDate.getMonth();
-
-        if (monthlyData[currentMonth]) {
-          //monthlyData[currentMonth] += rainAmount;
-          monthlyData[currentMonth].rainMM += rainAmount;
-        } else {
-          monthlyData[currentMonth] = {
-            name : currentMonth,
-            rainMM : rainAmount
-          };
-
+      siteTotals.forEach(function(item) {
+        let theYear = JSON.parse(item.key).year;
+        let theMonth = JSON.parse(item.key).month;
+        if (!monthlyData[theMonth]) {
+          monthlyData[theMonth] = {name: theMonth};
         }
-        // if (rainDate.getFullYear() === currentYear) {
-        //   if (newSites[siteID].annualTotal) {
-        //     newSites[siteID].annualTotal += rainAmount;
-        //   } else {
-        //     newSites[siteID].annualTotal = rainAmount;
-        //   }
-        // }
+        monthlyData[theMonth][theYear] = item.value;
       });
-      monthlyData.forEach(function (item) {
-        monthlyArray.push(item);
-      });
-      console.log(monthlyArray);
-      this.setState({monthlyData : monthlyArray});
+
+      console.log(monthlyData);
+      this.setState({monthlyData : monthlyData});
+
+      // let siteCounts = siteTotal.group().reduceCount(item => item['rainfall(Mm)']).all();
+      // console.log(siteCounts);
+      // this.print_filter(siteCounts);
+      // //console.log(siteCounts.all());
+
+//siteTotals.forEach()
+
+      // let singleSite = siteTotal.filter(112);
+      // //let siteTotal = siteTotal.filter(124).groupAll().reduceSum(function(d) {return d['rainfall(Mm)']}).value();;
+      // let siteTotal = siteTotal.filter(124).groupAll().value();
+      // //crossdata.groupAll().reduceSum(function(d) {return d['rainfall(Mm)']}).value();
+      // //console.log(singleSite.size());
+      // console.log(singleSite.top(Infinity));
+      // console.log(siteTotal);
+
+
+      // // Calculate the monthly totals
+      // let monthlyData = [];
+      // let monthlyArray = [];
+      // rainData.forEach(function(row) {
+      //   //console.log(row);
+      //   let siteID = parseInt(row['key']);
+      //   let rainDate = new Date(row['name']);
+      //   let rainAmount = row['rainfall(Mm)'];
+      //   //let currentYear = 2019;
+
+      //   let currentMonth = rainDate.getMonth();
+      //   const monthName = rainDate.toLocaleString('default', { month: 'short' });
+      //   let currentYear = rainDate.getFullYear();
+
+      //   if (monthlyData[currentMonth]) {
+      //     //monthlyData[currentMonth] += rainAmount;
+      //     if (monthlyData[currentMonth][currentYear]) {
+      //       monthlyData[currentMonth][currentYear]['totalRain'] += rainAmount;
+      //       monthlyData[currentMonth][currentYear]['entryCount'] += 1;
+      //     } else {
+      //       monthlyData[currentMonth][currentYear] = { totalRain: rainAmount, entryCount : 1 };
+      //     }
+      //     //monthlyData[currentYear] = rainAmount;
+      //   } else {
+      //     monthlyData[currentMonth] = [];
+      //     // monthlyData[currentMonth] = {
+      //     //   name : monthName,
+      //     // };
+      //     monthlyData[currentMonth][currentYear] = { totalRain: rainAmount, entryCount : 1 };
+      //   }
+
+      //   // Replace the totals + instance counts with the average.
+      //   // let something = monthlyData.reduce((eachMonth, value) => {
+      //   //   console.log(eachMonth);
+      //   //   let somethingElse =  eachMonth.reduce( (eachYear, value) => {
+      //   //     console.log(eachYear);
+      //   //     return (eachYear.totalRain / eachYear.entryCount);
+      //   //   });
+      //   //   return somethingElse;
+      //   //   // console.log(eachMonth);
+      //   //   // console.log(value);
+      //   //   // return 1;
+      //   // });
+
+
+
+      //   // if (rainDate.getFullYear() === currentYear) {
+      //   //   if (newSites[siteID].annualTotal) {
+      //   //     newSites[siteID].annualTotal += rainAmount;
+      //   //   } else {
+      //   //     newSites[siteID].annualTotal = rainAmount;
+      //   //   }
+      //   // }
+      // });
+
+
+      // let newArray = monthlyData.map((eachMonth, index, arr) => {
+      //   console.log(eachMonth);
+      //   let newElement = eachMonth.map((val, index, arr) => {
+      //     console.log(val);
+      //     return (val.totalRain / val.entryCount);
+      //     if (val instanceof Array) {
+      //       eachMonth[index] = val.reduce((theYear, value) => {
+      //         console.log(theYear);
+      //         return (theYear.totalRain / theYear.entryCount);
+      //       });
+      //     }
+      //   });
+      //   return newElement;
+      //   // let somethingElse =  eachMonth.reduce( (eachYear, value) => {
+      //   //   console.log(eachYear);
+      //   //   return (eachYear.totalRain / eachYear.entryCount);
+      //   // });
+      //   // return somethingElse;
+      //   // console.log(eachMonth);
+      //   // console.log(value);
+      //   // return 1;
+      // });
+      // console.log(newArray);
+
+      // monthlyData.forEach(function (item) {
+      //   monthlyArray.push(item);
+      // });
+      // //console.log(monthlyArray);
+      // this.setState({monthlyData : monthlyArray});
 
     } else {
       console.log("data not loaded");
@@ -458,8 +622,9 @@ console.log(newSites);
       <div id='tableContainer'>
         <Logo/>
         <br/>
-        <AreaMap sitesData={this.state.sites}/>
+        <AreaMap sitesData={this.state.sites} clickSite={this.changeSite.bind(this)}/>
         <br/>
+        <Button onClick={this.changeSite.bind(this)}>Change Site</Button>
         <YearChart monthlyData={this.state.monthlyData}/>
         {/* <SchoolPopUp
           open={this.state.popUpOpen}
