@@ -304,12 +304,9 @@ class SchoolTable extends Component {
       // Calculate the annual rain:
       let rainData = this.state.rainData;
       let newSites = this.state.sites;
-      //console.log(rainData);
-
 
       newSites = this.clearSitesRaindata(newSites);
       rainData.forEach(function(row) {
-        //console.log(row);
         let siteID = parseInt(row['key']);
         let rainDate = new Date(row['name']);
         let rainAmount = row['rainfall(Mm)'];
@@ -323,19 +320,10 @@ class SchoolTable extends Component {
           }
         }
       });
-console.log("setting sites");
-console.log(newSites);
       this.setState({sites : newSites});
 
+      // Use the crossfilter tool to group rain data by site.
       let crossdata = crossfilter(rainData);
-      console.log(crossdata.size());
-      console.log("^^^^aa");
-
-      let siteID = this.state.currentSiteID;
-      let oneSite = crossdata.dimension(function(d) {return d.key}).filter(siteID);
-
-      //let siteTotal = crossdata.dimension(function(d) {return (new Date(d['name']).getFullYear()) + '-'  + (new Date(d['name']).getMonth()) });
-
       let siteTotal = crossdata.dimension(function(d) {
         let theDate = new Date(d['name']);
         //return JSON.stringify ( { year: theDate.getFullYear() , month: theDate.toLocaleString('default', { month: 'short' }) } ) ;
@@ -343,37 +331,10 @@ console.log(newSites);
         //return (new Date(d['name']).getFullYear()) + '-'  + (new Date(d['name']).getMonth())
       });
 
-this.print_filter(siteTotal);
-
-
-      // let siteTotalsGroup = siteTotal.group(); //.reduceSum(item => item['rainfall(Mm)']);
-      // this.print_filter(siteTotalsGroup);
-
-      // siteTotalsGroup.all().forEach(function(d) {
-      //   //parse the json string created above
-      //   d.key = JSON.parse(d.key);
-      // });
-
-      //let siteTotals = siteTotalsGroup.all();
-
       let siteTotals = siteTotal.group().reduceSum(item => item['rainfall(Mm)']).all();
-      console.log(siteTotals);
-      this.print_filter(siteTotals);
-
-      // let mapData = siteTotals.map((item, index, arr) => {
-      //   console.log(item);
-      //   //console.log(index);
-      //   //console.log(arr);
-      //   let newKey = JSON.parse(item.key).year;
-      //   return {
-      //       newKey : item['value']
-      //     };
-
-      // });
-      // console.log(mapData);
+      //this.print_filter(siteTotals);
 
       let monthlyData = [];
-      let monthlyArray = [];
       siteTotals.forEach(function(item) {
         let theYear = JSON.parse(item.key).year;
         let theMonth = JSON.parse(item.key).month;
@@ -383,111 +344,8 @@ this.print_filter(siteTotal);
         monthlyData[theMonth][theYear] = item.value;
       });
 
-      console.log(monthlyData);
+      //console.log(monthlyData);
       this.setState({monthlyData : monthlyData});
-
-      // let siteCounts = siteTotal.group().reduceCount(item => item['rainfall(Mm)']).all();
-      // console.log(siteCounts);
-      // this.print_filter(siteCounts);
-      // //console.log(siteCounts.all());
-
-//siteTotals.forEach()
-
-      // let singleSite = siteTotal.filter(112);
-      // //let siteTotal = siteTotal.filter(124).groupAll().reduceSum(function(d) {return d['rainfall(Mm)']}).value();;
-      // let siteTotal = siteTotal.filter(124).groupAll().value();
-      // //crossdata.groupAll().reduceSum(function(d) {return d['rainfall(Mm)']}).value();
-      // //console.log(singleSite.size());
-      // console.log(singleSite.top(Infinity));
-      // console.log(siteTotal);
-
-
-      // // Calculate the monthly totals
-      // let monthlyData = [];
-      // let monthlyArray = [];
-      // rainData.forEach(function(row) {
-      //   //console.log(row);
-      //   let siteID = parseInt(row['key']);
-      //   let rainDate = new Date(row['name']);
-      //   let rainAmount = row['rainfall(Mm)'];
-      //   //let currentYear = 2019;
-
-      //   let currentMonth = rainDate.getMonth();
-      //   const monthName = rainDate.toLocaleString('default', { month: 'short' });
-      //   let currentYear = rainDate.getFullYear();
-
-      //   if (monthlyData[currentMonth]) {
-      //     //monthlyData[currentMonth] += rainAmount;
-      //     if (monthlyData[currentMonth][currentYear]) {
-      //       monthlyData[currentMonth][currentYear]['totalRain'] += rainAmount;
-      //       monthlyData[currentMonth][currentYear]['entryCount'] += 1;
-      //     } else {
-      //       monthlyData[currentMonth][currentYear] = { totalRain: rainAmount, entryCount : 1 };
-      //     }
-      //     //monthlyData[currentYear] = rainAmount;
-      //   } else {
-      //     monthlyData[currentMonth] = [];
-      //     // monthlyData[currentMonth] = {
-      //     //   name : monthName,
-      //     // };
-      //     monthlyData[currentMonth][currentYear] = { totalRain: rainAmount, entryCount : 1 };
-      //   }
-
-      //   // Replace the totals + instance counts with the average.
-      //   // let something = monthlyData.reduce((eachMonth, value) => {
-      //   //   console.log(eachMonth);
-      //   //   let somethingElse =  eachMonth.reduce( (eachYear, value) => {
-      //   //     console.log(eachYear);
-      //   //     return (eachYear.totalRain / eachYear.entryCount);
-      //   //   });
-      //   //   return somethingElse;
-      //   //   // console.log(eachMonth);
-      //   //   // console.log(value);
-      //   //   // return 1;
-      //   // });
-
-
-
-      //   // if (rainDate.getFullYear() === currentYear) {
-      //   //   if (newSites[siteID].annualTotal) {
-      //   //     newSites[siteID].annualTotal += rainAmount;
-      //   //   } else {
-      //   //     newSites[siteID].annualTotal = rainAmount;
-      //   //   }
-      //   // }
-      // });
-
-
-      // let newArray = monthlyData.map((eachMonth, index, arr) => {
-      //   console.log(eachMonth);
-      //   let newElement = eachMonth.map((val, index, arr) => {
-      //     console.log(val);
-      //     return (val.totalRain / val.entryCount);
-      //     if (val instanceof Array) {
-      //       eachMonth[index] = val.reduce((theYear, value) => {
-      //         console.log(theYear);
-      //         return (theYear.totalRain / theYear.entryCount);
-      //       });
-      //     }
-      //   });
-      //   return newElement;
-      //   // let somethingElse =  eachMonth.reduce( (eachYear, value) => {
-      //   //   console.log(eachYear);
-      //   //   return (eachYear.totalRain / eachYear.entryCount);
-      //   // });
-      //   // return somethingElse;
-      //   // console.log(eachMonth);
-      //   // console.log(value);
-      //   // return 1;
-      // });
-      // console.log(newArray);
-
-      // monthlyData.forEach(function (item) {
-      //   monthlyArray.push(item);
-      // });
-      // //console.log(monthlyArray);
-      // this.setState({monthlyData : monthlyArray});
-
     } else {
       console.log("data not loaded");
     }
