@@ -13,6 +13,7 @@ import Logo from "./Logo";
 import AreaMap from "./AreaMap";
 import YearChart from "./YearChart";
 import crossfilter from "crossfilter2";
+import RainTable from "./RainTable";
 
 const logoStyle = { borderRadius: 4, float: 'left', height: '30px', width: '30px', position: 'relative', left: '-15px' }
 
@@ -281,6 +282,7 @@ class SchoolTable extends Component {
       this.setState({ sites: list });
 
       this.calculateRain();
+      this.calculateRainTable();
     }.bind(this));
   }
 
@@ -291,23 +293,72 @@ class SchoolTable extends Component {
     return sitesData;
   }
 
+  calculateRainTable() {
+    console.log("calculating rain table");
+    if (this.state.rainData && this.state.sites) {
+
+      // Clean data (skip sites that didn't have entries throughout the period)
+      // Todo
+      // -----
+
+      let rainData = this.state.rainData;
+      let allDays = [];
+      let tableData = [];
+
+      rainData.forEach(function(row) {
+        let siteID = parseInt(row['key']);
+        let rainDate = new Date(row['name']);
+        let rainAmount = row['rainfall(Mm)'];
+
+        // Add each date to the column list.
+        let dateColumn = rainDate.getFullYear() + "-" + rainDate.getMonth() + "-" + rainDate.getDay();
+        allDays.push(dateColumn);
+
+        //Add the entry to the correct table cell.
+        if (!tableData[siteID]) {
+          tableData[siteID] = {};
+          tableData[siteID].key = siteID;
+          tableData[siteID]['Site ID'] = siteID;
+        }
+        tableData[siteID][dateColumn] = rainAmount;
+
+      });
+
+      // Reduce the days to unique entries
+      let dayColumns = [...new Set(allDays)];
+      dayColumns = ['Site ID'].concat(dayColumns);
+      let cellData =  [...new Set(tableData)];
+
+      this.setState({dayColumns : dayColumns});
+      this.setState({tableData : cellData});
+
+    } else {
+      console.log("data not loaded");
+    }
+  }
+
   calculateRain() {
     if (this.state.rainData && this.state.sites) {
 
       // Clean data (skip sites that didn't have entries throughout the period)
+      // Todo
+      // -----
 
       let rainData = this.state.rainData;
       let newSites = this.state.sites;
+      let allDays = [];
+      let tableData = [];
 
+      // We're about to re-caculate the totals, so clear existing rainfall data.
       newSites = this.clearSitesRaindata(newSites);
 
-      // Calculate the annual rain
       rainData.forEach(function(row) {
         let siteID = parseInt(row['key']);
         let rainDate = new Date(row['name']);
         let rainAmount = row['rainfall(Mm)'];
         let currentYear = 2019;
 
+        // Calculate the annual rain
         if (rainDate.getFullYear() === currentYear) {
           if (newSites[siteID].annualTotal) {
             newSites[siteID].annualTotal += rainAmount;
@@ -316,6 +367,7 @@ class SchoolTable extends Component {
           }
         }
       });
+
       this.setState({sites : newSites});
 
       // Use the crossfilter tool to group rain data by site.
@@ -406,6 +458,7 @@ class SchoolTable extends Component {
       this.setState({ rainData: list, isLoading: false });
 
       this.calculateRain();
+      this.calculateRainTable();
 
     }.bind(this));
   }
@@ -418,14 +471,10 @@ class SchoolTable extends Component {
     const options = {
       pagination: false,
       selectableRows: 'none',
-      expandableRows: true,
-      expandableRowsOnClick: true,
+      expandableRows: false,
+      expandableRowsOnClick: false,
       print: false,
       download: false,
-      onCellClick: (cellIndex, rowIndex) => {
-        console.log("todo: expand/collapse " + cellIndex, rowIndex);
-
-      },
       onRowClick: rowData => {
         // Set the url to the key for this opened school.
         // TODO: remove instance of magic number.
@@ -441,17 +490,7 @@ class SchoolTable extends Component {
           )
         }
       },
-      renderExpandableRow: (rowData, rowMeta) => {
-        const colSpan = rowData.length + 1;
-        return (
-          <TableRow>
-            <TableCell colSpan={colSpan}>
-              <ExpandableRow school={this.state.sites[rowMeta.dataIndex]} likeClick={this.likeClick.bind(this)} />
-            </TableCell>
-          </TableRow>
-        );
 
-      },
       customToolbar: () => {
         return (
           <ToolbarExtra active={this.state.showLiked} onClick={this.toggleShowLiked.bind(this)} />
@@ -479,15 +518,15 @@ class SchoolTable extends Component {
           open={this.state.popUpOpen}
           school={this.state.selectedSchool}
           onClose={this.onPopUpClose}
-        />
+        /> */}
 
-        <MUIDataTable
+        <RainTable
           title={<AppTitleBar toggleLikesClick={this.toggleShowLiked.bind(this)} showLikesStatus={this.state.showLiked}/>}
           style={style}
-          data={this.state.schools}
-          columns={columns}
+          data={this.state.tableData}
+          columns={this.state.dayColumns}
           options={options}
-        /> */}
+        />
       </div>
     );
   }
