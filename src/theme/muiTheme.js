@@ -6,15 +6,15 @@ const theme = createMuiTheme({
   },
   palette: {
     primary: {
-      light: "#58943a",
-      main: "#28660a",
-      dark: "#003a00",
+      light: "#80d6ff",
+      main: "#42a5f5",
+      dark: "#0077c2",
       contrastText: "#fff"
     },
     secondary: {
-      light: "#eab842",
-      main: "#b48803",
-      dark: "#805b00",
+      light: "#534bae",
+      main: "#1a237e",
+      dark: "#000051",
       contrastText: "#000"
     },
     background: {
@@ -56,7 +56,7 @@ const theme = createMuiTheme({
           backgroundColor: "#fafafa"
         },
         "&:hover": {
-          backgroundColor: "#ebfce1!important",
+          backgroundColor: "#80d6ff!important",
           cursor: "pointer"
         }
       }
@@ -64,6 +64,14 @@ const theme = createMuiTheme({
     MUIDataTableHeadCell: {
       root: {
         fontSize: 15
+      }
+    },
+    MuiTableCell: {
+      root: {
+        padding: 0,
+        margin: 0,
+        textAlign: "center",
+        borderLeft: "solid #e0e0e0 1px"
       }
     }
   }
