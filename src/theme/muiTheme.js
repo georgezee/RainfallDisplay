@@ -24,14 +24,14 @@ const theme = createMuiTheme({
   overrides: {
     MuiListItemIcon: {
       root: {
-        color: "#28660a",
+        color: "#1a237e",
         marginRight: 0,
         marginLeft: 10
       }
     },
     MuiListItemText: {
       primary: {
-        color: "#003a00",
+        color: "#0077c2",
       }
     },
     MuiListItem: {

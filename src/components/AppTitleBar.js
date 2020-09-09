@@ -8,7 +8,6 @@ function AppTitleBar(props) {
   return (
     <div id="appTitleBar" style={style}>
       <SideBar showLikesStatus={props.showLikesStatus} toggleLikesClick={props.toggleLikesClick}/>
-      <Logo />
     </div>
   );
 }

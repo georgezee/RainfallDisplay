@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import muiTheme from '../theme/muiTheme';
 import ReactGA from 'react-ga';
+import Layout from './Layout';
 
 import { createBrowserHistory } from 'history';
 
@@ -30,7 +31,8 @@ const App = () => (
     <div>
       <Grid container>
         <Grid item xs={12}>
-          <SchoolTable history={history} />
+          <Layout history={history} />
+          {/* <SchoolTable history={history} /> */}
         </Grid>
         <Grid item xs={3} />
       </Grid>
