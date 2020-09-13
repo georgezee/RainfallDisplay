@@ -48,8 +48,8 @@ function DemoTabs(props) {
         value={value}
       >
         <SideBar/>
-        <Tab label="Rainfall Maps" aria-controls="a11y-tabpanel-0" id="a11y-tab-0" />
-        <Tab label="Tabular Data" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
+        <Tab label="Maps" aria-controls="a11y-tabpanel-0" id="a11y-tab-0" />
+        <Tab label="Rain Table" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
         <Tab label="About" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" />
       </Tabs>
     </AppBar>
