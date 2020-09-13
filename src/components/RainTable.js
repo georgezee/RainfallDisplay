@@ -192,6 +192,7 @@ class RainTable extends Component {
      };
   }
 
+  // TODO: Determine correct flow for table updating.
   shouldComponentUpdate() {
     if (this.props.data) {
       return false;

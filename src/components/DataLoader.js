@@ -219,6 +219,17 @@ class DataLoader extends Component {
     }
   }
 
+  getSiteByName(vanityName) {
+    let matchingSite = this.state.sites.filter((site, index) => {return site.vanityName === vanityName} )
+    return matchingSite[0].siteid;
+  }
+
+  changeSite(vanityName) {
+    let siteID = this.getSiteByName(vanityName);
+    this.setState({currentSiteID: siteID});
+    this.calculateRain();
+  }
+
   render() {
     return (
       <Paper square className='PaperPanel'>
@@ -229,7 +240,7 @@ class DataLoader extends Component {
           monthlyData={this.state.monthlyData}
           dayColumns={this.state.dayColumns}
           isLoading={this.state.isLoading}
-          recalculate={this.calculateRain.bind(this)}
+          changeSite={this.changeSite.bind(this)}
         />
       </Paper>
     );

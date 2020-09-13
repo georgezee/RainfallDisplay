@@ -87,7 +87,7 @@ export default function AccessibleTabs(props) {
           sites={props.sites}
           monthlyData={props.monthlyData}
           isLoading={props.isLoading}
-          recalculate={props.recalculate}
+          changeSite={props.changeSite}
         />
       </TabPanel>
       <TabPanel value={value} index={2}>

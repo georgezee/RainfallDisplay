@@ -30,16 +30,7 @@ class TabMap extends Component {
     console.log("("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/},/g,"},\n\t").replace("]","\n]"));
   }
 
-  getSiteByName(vanityName) {
-    let matchingSite = this.props.sites.filter((site, index) => {return site.vanityName === vanityName} )
-    return matchingSite[0].siteid;
-  }
 
-  changeSite(vanityName) {
-    let siteID = this.getSiteByName(vanityName);
-    this.setState({currentSiteID: siteID});
-    this.props.recalculate();
-  }
 
   onPopUpClose = event => {
     this.setState({ popUpOpen: false });
@@ -52,7 +43,7 @@ class TabMap extends Component {
       <div id='tableContainer'>
         <Logo/>
         <br/>
-        <AreaMap sitesData={this.props.sites} clickSite={this.changeSite.bind(this)}/>
+        <AreaMap sitesData={this.props.sites} clickSite={this.props.changeSite}/>
         <br/>
         <YearChart monthlyData={this.props.monthlyData}/>
       </div>
