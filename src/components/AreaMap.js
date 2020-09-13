@@ -16,7 +16,7 @@ export default class AreaMap extends Component {
         <Map
           center={[this.state.lat, this.state.lng]}
           zoom={this.state.zoom}
-          style={{ width: '600px', height: '500px'}}
+          style={{ width: '100%', height: '50vh'}}
         >
           <TileLayer
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
