@@ -16,8 +16,8 @@ export default class YearChart extends Component {
         <LineChart data={monthlyData}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey="name"/>
+          <YAxis label={{ value: 'Rain (mm)', angle: -90, position: 'insideLeft' }} />
           <Tooltip />
           <Legend />
           <Line type="monotone" dataKey="2018" stroke="#0095FF" />

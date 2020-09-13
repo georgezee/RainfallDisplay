@@ -159,11 +159,13 @@ class DataLoader extends Component {
       //this.print_filter(siteTotals);
 
       let monthlyData = [];
+      let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       siteTotals.forEach(function(item) {
         let theYear = JSON.parse(item.key).year;
         let theMonth = JSON.parse(item.key).month;
+        let monthName = monthNames[theMonth];
         if (!monthlyData[theMonth]) {
-          monthlyData[theMonth] = {name: theMonth};
+          monthlyData[theMonth] = {name: monthName};
         }
         monthlyData[theMonth][theYear] = item.value;
       });
