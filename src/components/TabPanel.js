@@ -9,6 +9,8 @@ import SideBar from './SideBar';
 //import SchoolTable from './SchoolTable';
 import TabMap from './TabMap';
 import TabTable from './TabTable';
+import GearIcon from '@material-ui/icons/Settings';
+import { Card, Typography } from '@material-ui/core';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,8 +51,8 @@ function DemoTabs(props) {
       >
         <SideBar/>
         <Tab label="Maps" aria-controls="a11y-tabpanel-0" id="a11y-tab-0" />
-        <Tab label="Rain Table" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
-        <Tab label="About" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" />
+        <Tab label="Daily" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
+        <Tab label="Monthly" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" />
       </Tabs>
     </AppBar>
   );
@@ -101,7 +103,12 @@ export default function AccessibleTabs(props) {
         />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item Three
+        <Card style={{verticalAlign: 'middle', paddingTop: '10vh', height: '30vh' }}>
+          <Typography component="div" >
+            <GearIcon/> This page is still in progress.
+          </Typography>
+
+        </Card>
       </TabPanel>
     </div>
   );

@@ -9,10 +9,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import CodeIcon from '@material-ui/icons/Code';
 import EditIcon from '@material-ui/icons/Edit';
 import MailIcon from '@material-ui/icons/Mail';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';
 import SchoolIcon from '@material-ui/icons/School';
 import Logo from "./Logo";
-import AboutPage from "./AboutPage";
+import PageAbout from "./PageAbout";
+import PageOtherResources from "./PageOtherResources";
 
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -39,6 +40,12 @@ class SideBar extends Component {
     });
   };
 
+  toggleAboutData = (open) => () => {
+    this.setState({
+      aboutDataOpen: open,
+    });
+  };
+
   render() {
 
     const classes = {
@@ -55,9 +62,9 @@ class SideBar extends Component {
               <ListItemIcon><SchoolIcon /></ListItemIcon>
               <ListItemText primary="About this Project" />
           </ListItem>
-          <ListItem button key="favourites" onClick={this.props.toggleLikesClick} className={buttonClass}>
-              <ListItemIcon><FavoriteIcon /></ListItemIcon>
-              <ListItemText primary="Show Favourites" />
+          <ListItem button key="datainfo" onClick={this.toggleAboutData(true)} className={buttonClass}>
+              <ListItemIcon><CollectionsBookmark /></ListItemIcon>
+              <ListItemText primary="Other Resources" />
           </ListItem>
           <Link href="https://github.com/georgezee/RainfallDisplay">
             <ListItem button key="github">
@@ -65,14 +72,14 @@ class SideBar extends Component {
               <ListItemText primary="Get the Code!" />
             </ListItem>
           </Link>
-          <Link href="mailto:info@springfisher.com">
+          <Link href="mailto:houtbayrain@gmail.com">
             <ListItem button key="join">
               <ListItemIcon><EditIcon /></ListItemIcon>
               <ListItemText primary="Join" />
             </ListItem>
           </Link>
           <Divider />
-          <Link href="mailto:info@springfisher.com">
+          <Link href="mailto:houtbayrain@gmail.com">
             <ListItem button key="contact-us">
               <ListItemIcon><MailIcon /></ListItemIcon>
               <ListItemText primary="Contact Us" />
@@ -90,6 +97,7 @@ class SideBar extends Component {
           aria-owns="menuList"
           aria-haspopup="true"
           onClick={this.toggleDrawer('left', true)}
+          className="menuIcon"
         >
           <MenuIcon />
         </IconButton>
@@ -103,7 +111,8 @@ class SideBar extends Component {
             {sideList}
           </div>
         </Drawer>
-        <AboutPage open={this.state.aboutOpen} handleClose={this.toggleAbout(false)} />
+        <PageAbout open={this.state.aboutOpen} handleClose={this.toggleAbout(false)} />
+        <PageOtherResources open={this.state.aboutDataOpen} handleClose={this.toggleAboutData(false)} />
       </div>
     );
   }

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import MUIDataTable from "mui-datatables";
 import Loader from "./Loader";
 import AppTitleBar from "./AppTitleBar";
-import ToolbarExtra from "./ToolbarExtra";
 import Logo from "./Logo";
 
 // // Note: When adding new columns, if the column indexes change, then we need to review the "Show Column" hack, see index.css
