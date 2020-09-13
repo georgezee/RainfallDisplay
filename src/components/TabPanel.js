@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Logo from './Logo';
+// import Typography from '@material-ui/core/Typography';
 import SideBar from './SideBar';
-import SchoolTable from './SchoolTable';
+//import SchoolTable from './SchoolTable';
+import TabMap from './TabMap';
+import TabTable from './TabTable';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -22,7 +23,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <div p={3}>
-          <Typography>{children}</Typography>
+          {children}
         </div>
       )}
     </div>
@@ -47,9 +48,9 @@ function DemoTabs(props) {
         value={value}
       >
         <SideBar/>
-        <Tab label="Item One" aria-controls="a11y-tabpanel-0" id="a11y-tab-0" />
-        <Tab label="Item Two" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
-        <Tab label="Item Three" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" />
+        <Tab label="Rainfall Maps" aria-controls="a11y-tabpanel-0" id="a11y-tab-0" />
+        <Tab label="Tabular Data" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
+        <Tab label="About" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" />
       </Tabs>
     </AppBar>
   );
@@ -68,7 +69,7 @@ DemoTabs.propTypes = {
 //   },
 // });
 
-export default function AccessibleTabs() {
+export default function AccessibleTabs(props) {
   //const classes = useStyles();
   const classes = {root: 'testing'};
 
@@ -81,11 +82,23 @@ export default function AccessibleTabs() {
     <div className={classes.root}>
       <DemoTabs labelId="demo-a11y-tabs-manual-label" onChange={handleChange} value={value} />
       <TabPanel value={value} index={1}>
-        {/* <Logo/> */}
-        <SchoolTable/>
+        <TabMap
+        // rainData={props.rainData}
+          sites={props.sites}
+          monthlyData={props.monthlyData}
+          isLoading={props.isLoading}
+          recalculate={props.recalculate}
+        />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Two
+        <TabTable
+          // rainData={props.rainData}
+          // sites={props.sites}
+          tableData={props.tableData}
+          // monthlyData={props.monthlyData}
+          dayColumns={props.dayColumns}
+          isLoading={props.isLoading}
+        />
       </TabPanel>
       <TabPanel value={value} index={3}>
         Item Three

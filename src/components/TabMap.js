@@ -1,0 +1,63 @@
+import React, { Component } from "react";
+import Logo from "./Logo";
+import AreaMap from "./AreaMap";
+import YearChart from "./YearChart";
+
+class TabMap extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      schools: [],
+      hiddenSchools: [],
+      isLoading: true,
+      popUpOpen: false,
+      showLiked: false,
+      selectedSchool: {},
+      currentSiteID : 112
+     };
+  }
+
+  componentDidMount() {
+  }
+
+  print_filter(f){
+    //var f=eval(filter);
+    if (typeof(f.length) != "undefined") {}else{}
+    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+    // Below had no unnecessary escape warning, check this still works before removing.
+    //console.log("("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+    console.log("("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/},/g,"},\n\t").replace("]","\n]"));
+  }
+
+  getSiteByName(vanityName) {
+    let matchingSite = this.props.sites.filter((site, index) => {return site.vanityName === vanityName} )
+    return matchingSite[0].siteid;
+  }
+
+  changeSite(vanityName) {
+    let siteID = this.getSiteByName(vanityName);
+    this.setState({currentSiteID: siteID});
+    this.props.recalculate();
+  }
+
+  onPopUpClose = event => {
+    this.setState({ popUpOpen: false });
+  };
+
+  render() {
+    console.log('rendering maps ...');
+    console.log(this.props.sites);
+    return (
+      <div id='tableContainer'>
+        <Logo/>
+        <br/>
+        <AreaMap sitesData={this.props.sites} clickSite={this.changeSite.bind(this)}/>
+        <br/>
+        <YearChart monthlyData={this.props.monthlyData}/>
+      </div>
+    );
+  }
+}
+
+export default TabMap;
