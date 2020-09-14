@@ -165,7 +165,7 @@ class DataLoader extends Component {
         let theMonth = JSON.parse(item.key).month;
         let monthName = monthNames[theMonth];
         if (!monthlyData[theMonth]) {
-          monthlyData[theMonth] = {name: monthName};
+          monthlyData[theMonth] = {month: monthName};
         }
         monthlyData[theMonth][theYear] = item.value;
       });
