@@ -125,9 +125,9 @@ class DataLoader extends Component {
       newSites = this.clearSitesRaindata(newSites);
 
       rainData.forEach(function(row) {
-        let siteID = parseInt(row['key']);
-        let rainDate = new Date(row['name']);
-        let rainAmount = row['rainfall(Mm)'];
+        let siteID = parseInt(row['siteId']);
+        let rainDate = new Date(row['date']);
+        let rainAmount = row['rainfallMm'];
         let currentYear = 2019;
 
         // Calculate the annual rain
@@ -146,16 +146,16 @@ class DataLoader extends Component {
       let crossdata = crossfilter(rainData);
 
       let siteID = this.state.currentSiteID;
-      crossdata.dimension(function(d) {return d.key}).filter(siteID);
+      crossdata.dimension(function(d) {return d.siteId}).filter(siteID);
 
       let siteTotal = crossdata.dimension(function(d) {
-        let theDate = new Date(d['name']);
+        let theDate = new Date(d['date']);
         //return JSON.stringify ( { year: theDate.getFullYear() , month: theDate.toLocaleString('default', { month: 'short' }) } ) ;
         return JSON.stringify ( { year: theDate.getFullYear() , month: theDate.getMonth() } ) ;
-        //return (new Date(d['name']).getFullYear()) + '-'  + (new Date(d['name']).getMonth())
+        //return (new Date(d['date']).getFullYear()) + '-'  + (new Date(d['date']).getMonth())
       });
 
-      let siteTotals = siteTotal.group().reduceSum(item => item['rainfall(Mm)']).all();
+      let siteTotals = siteTotal.group().reduceSum(item => item['rainfallMm']).all();
       //this.print_filter(siteTotals);
 
       let monthlyData = [];
@@ -190,9 +190,9 @@ class DataLoader extends Component {
       let tableData = [];
 
       rainData.forEach(function(row) {
-        let siteID = parseInt(row['key']);
-        let rainDate = new Date(row['name']);
-        let rainAmount = row['rainfall(Mm)'];
+        let siteID = parseInt(row['siteId']);
+        let rainDate = new Date(row['date']);
+        let rainAmount = row['rainfallMm'];
 
         // Add each date to the column list.
         let dateColumn = rainDate.getFullYear() + "-" + rainDate.getMonth() + "-" + rainDate.getDay();
@@ -201,7 +201,7 @@ class DataLoader extends Component {
         //Add the entry to the correct table cell.
         if (!tableData[siteID]) {
           tableData[siteID] = {};
-          tableData[siteID].key = siteID;
+          tableData[siteID].siteId = siteID;
           tableData[siteID]['Site ID'] = siteID;
         }
         tableData[siteID][dateColumn] = rainAmount;

@@ -23,8 +23,6 @@ class PageAbout extends React.Component {
 
   render() {
     const { fullScreen } = this.props;
-    const imgStyle = {width: 180, paddingLeft: 10, paddingRight: 10, top: 15, position: 'relative'}
-    const cbImgStyle = {width: 160, float: 'right', padding: 10 }
     const buttonStyle = {padding: 20}
 
     return (
