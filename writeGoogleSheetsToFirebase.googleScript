@@ -1,17 +1,17 @@
 function writeDataToFirebase() {
-  var ss = SpreadsheetApp.openById("1Qrgw91Vod2bPmH1OlDMBqGJG2DF5XGZnIGz_Lc_9PvQ");
+
+  // Get individual rainfall entries.
+  var ss = SpreadsheetApp.openById("1MZLjW7YuG9UKPpIjN2w8jjnubT74oiAbvInntqNTQ5E");
   var sheet = ss.getSheets()[0];
   var data = sheet.getDataRange().getValues();
   var dataToImport = {};
 
-  for(var i = 2; i < data.length; i++) {
-    var programName = data[i][0];
-    var programKey = data[i][1];
+  for(var i = 1; i < data.length; i++) {
 
-    // Stop processing at the end marker.
-    if (programName == "end") {
-      break;
-    }
+    var programName = data[i][1];
+    var programKey = data[i][2];
+
+    programName = i + "-";
 
     // Ignore row if no key is present.
     if (programKey == "") {
@@ -20,28 +20,71 @@ function writeDataToFirebase() {
 
     dataToImport[programName] = {};
 
-    for(var y = 0; y < 100; y++) {
-      var columnName = data[1][y]
-      if(columnName) {
-        columnName = toTitleCase(columnName).replace(/\s/g, '');
+    // Define which columns contain data which should be ignored (e.g. private fields).
+    skipColumns=['timestamp', 'email', 'failureToCollectData'];
+
+    for(var y = 0; y < 6; y++) {
+      var columnName = data[0][y]
+      if ((columnName) && (columnName.length > 0)) {
+        columnName = toTitleCase(columnName).replace(/[\s\(\)\?]/g, '');
         columnName = decapitalizeFirstLetter(columnName)
-        // Don't send columns that begin with the word 'private'.
-        if (columnName.substr(0,7) != 'private') {
+        // Don't send certain columns.
+        if (skipColumns.indexOf(columnName) == -1) {
           dataToImport[programName][columnName] = data[i][y];
         }
       }
     }
   }
 
+  // Get sites data.
+  var sites = {}
+
+  var sheet = ss.getSheets()[1];
+  var data = sheet.getDataRange().getValues();
+
+  for(var i = 2; i < data.length; i++) {
+    var programName = data[i][1];
+    var programKey = data[i][2];
+
+    programName = i + "-";
+
+    // Ignore row if no key is present.
+    if (programKey == "") {
+      break;
+    }
+
+    sites[programName] = {};
+
+    skipColumns=['owner', 'email'];
+    for(var y = 0; y < 100; y++) {
+      var columnName = data[0][y]
+      if ((columnName) && (columnName.length > 0)) {
+        columnName = toTitleCase(columnName).replace(/[\s\?]/g, '');
+        columnName = decapitalizeFirstLetter(columnName)
+        // Don't send certain columns.
+        if (skipColumns.indexOf(columnName) == -1) {
+          sites[programName][columnName] = data[i][y];
+        }
+      }
+    }
+  }
+
+  var dataComplete = {
+    sites: sites,
+    rainData: dataToImport
+  };
+
   // TODO: Use more secure auth method as per https://sites.google.com/site/scriptsexamples/new-connectors-to-google-services/firebase/tutorials/authenticate-with-a-service-account
   // Until this is complete, do not commit this token to any shared repo.
-  var firebaseUrl = "https://southafricacodeschool.firebaseio.com/";
-  var token = "[FIREBASE-DB-SECRET-GOES-HERE]";
-  var base = FirebaseApp.getDatabaseByUrl(firebaseUrl, token);
-  base.setData("", dataToImport);
+  var firebaseUrl = "https://rainfall-data-536ee.firebaseio.com/";
+  var token = "[FIREBASE-SECRET-GOES-HERE]";
+  //var base = FirebaseApp.getDatabaseByUrl(firebaseUrl, token);
+  var base = FirebaseApp.getDatabaseByUrl(firebaseUrl);
+  base.setData("", dataComplete);
 }
 
 function toTitleCase(str) {
+
     return str.replace(/\w\S*/g, function(txt){
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
