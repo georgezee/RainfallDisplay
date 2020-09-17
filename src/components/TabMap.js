@@ -2,20 +2,9 @@ import React, { Component } from "react";
 import Logo from "./Logo";
 import AreaMap from "./AreaMap";
 import YearChart from "./YearChart";
+import Loader from "./Loader";
 
 class TabMap extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      schools: [],
-      hiddenSchools: [],
-      isLoading: true,
-      popUpOpen: false,
-      showLiked: false,
-      selectedSchool: {},
-      currentSiteID : 112
-     };
-  }
 
   componentDidMount() {
   }
@@ -29,19 +18,14 @@ class TabMap extends Component {
     console.log("("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/},/g,"},\n\t").replace("]","\n]"));
   }
 
-
-
-  onPopUpClose = event => {
-    this.setState({ popUpOpen: false });
-  };
-
   render() {
+
     console.log('rendering maps ...');
     console.log(this.props.sites);
     return (
       <div id='tableContainer'>
-        <Logo/>
-        <br/>
+        <Logo type='inline'/>
+        {(this.props.isLoading) ? <Loader/> : ''}
         <AreaMap sitesData={this.props.sites} clickSite={this.props.changeSite}/>
         <br/>
         <YearChart monthlyData={this.props.monthlyData}/>
