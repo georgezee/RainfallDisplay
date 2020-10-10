@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import TabPanel from './TabPanel';
 import fire from "./firebase";
 import crossfilter from "crossfilter2";
+import {DateUtil} from "../util/GeneralUtils";
+
 
 class DataLoader extends Component {
   constructor(props) {
@@ -128,7 +130,7 @@ class DataLoader extends Component {
         let siteID = parseInt(row['siteId']);
         let rainDate = new Date(row['date']);
         let rainAmount = row['rainfallMm'];
-        let currentYear = 2019;
+        let currentYear = DateUtil.currentYear();
 
         // Calculate the annual rain
         if (rainDate.getFullYear() === currentYear) {
@@ -189,28 +191,39 @@ class DataLoader extends Component {
       let allDays = [];
       let tableData = [];
 
+
       rainData.forEach(function(row) {
         let siteID = parseInt(row['siteId']);
+        let siteName = this.getSiteByID(siteID);
+
         let rainDate = new Date(row['date']);
         let rainAmount = row['rainfallMm'];
 
-        // Add each date to the column list.
-        let dateColumn = rainDate.getFullYear() + "-" + rainDate.getMonth() + "-" + rainDate.getDay();
-        allDays.push(dateColumn);
+        // Only push the row to the data set if it matches the necessary criteria.
+        if (rainDate.getFullYear() === DateUtil.currentYear()) {
 
-        //Add the entry to the correct table cell.
-        if (!tableData[siteID]) {
-          tableData[siteID] = {};
-          tableData[siteID].siteId = siteID;
-          tableData[siteID]['Site ID'] = siteID;
+          // Add each date to the column list.
+          let dateColumn = DateUtil.formatDate(rainDate);
+          if(allDays.indexOf(dateColumn) === -1) {
+            allDays.push(dateColumn);
+          }
+
+          //Add the entry to the correct table cell.
+          if (!tableData[siteID]) {
+            tableData[siteID] = {};
+            tableData[siteID].siteId = siteID;
+            tableData[siteID]['Site ID'] = siteName;
+          }
+          tableData[siteID][dateColumn] = rainAmount;
         }
-        tableData[siteID][dateColumn] = rainAmount;
 
-      });
+      }, this);
+      let numToShow = 20;
+      allDays.sort();
+      allDays = allDays.slice(allDays.length - numToShow);
 
-      // Reduce the days to unique entries
-      let dayColumns = [...new Set(allDays)];
-      dayColumns = ['Site ID'].concat(dayColumns);
+      // Append the 'Site ID' column.
+      let dayColumns = ['Site ID'].concat(allDays);
       let cellData =  [...new Set(tableData)];
 
       this.setState({dayColumns : dayColumns});
@@ -219,6 +232,11 @@ class DataLoader extends Component {
     } else {
       console.log("data not loaded");
     }
+  }
+
+  getSiteByID(searchID) {
+    let matchingSite = this.state.sites.filter((site, index) => {return site.siteid === searchID} )
+    return matchingSite[0].vanityName;
   }
 
   getSiteByName(vanityName) {
