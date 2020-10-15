@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import MUIDataTable from "mui-datatables";
 import Loader from "./Loader";
 import Logo from "./Logo";
+import ToolbarExtra from "./ToolbarExtra";
 
 // // Note: When adding new columns, if the column indexes change, then we need to review the "Show Column" hack, see index.css
 // const columns = [
@@ -214,13 +215,13 @@ class RainTable extends Component {
       expandableRows: false,
       expandableRowsOnClick: false,
       print: false,
-      download: false,
-      onRowClick: rowData => {
-        // Set the url to the key for this opened school.
-        // TODO: remove instance of magic number.
-        const key = rowData[3];
-        this.props.history.push(key, {schoolSelected: key});
-      },
+      download: true,
+      // onRowClick: rowData => {
+      //   // Set the url to the key for this opened school.
+      //   // TODO: remove instance of magic number.
+      //   const key = rowData[3];
+      //   this.props.history.push(key, {schoolSelected: key});
+      // },
       textLabels: {
         body: {
           noMatch: this.state.isLoading ? (
@@ -230,12 +231,17 @@ class RainTable extends Component {
           )
         }
       },
-
       setRowProps: (row) => {
         return {
           className: 'schoolRow',
         };
+      },
+      customToolbar: () => {
+        return (
+          <ToolbarExtra />
+        );
       }
+
     };
 
     console.log("rendering rain table");
