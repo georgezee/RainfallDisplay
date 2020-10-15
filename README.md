@@ -6,9 +6,21 @@ Trello Board: https://trello.com/b/nQzzjvpb/rainfall-hout-bay
 
 It is an adaptation of the https://codeschooldirectory.co.za project, and is a [Codebridge](https://codebridge.org.za/) community project.
 
+## Architecture Overview
+
+The building blocks of the application are:
+- Google Sheets: Where rain entries are recorded by the community (via a Google Form).
+- Firebase: When the spreadsheet is updated, it pushes the data to a Firebase realtime data store.
+- Crossfilter2: For some manipulation of the raw data received from Firebase.
+- React: The front end is built in React, with the below mentioned components.
+- Material-UI: The component library + theme.
+- Recharts: For all graphs + charts.
+- LeafletJS: For the map visualizations.
+- Mui-datatable: Tabulated rain data is displayed here.
+
 ## Live Website
 
-We're still thinking of a great new domain name for our rainfall community site, but the temporary home is at: https://rainfall-data-536ee.firebaseapp.com/
+The application can be seen running at https://rainfallnet.com.
 
 Test data is stored in this Google Sheets: https://docs.google.com/spreadsheets/d/1XBpic3g_pt1CnjbJ-hCue5I84LR7oJnNNdCZvn968w8/edit?usp=sharing
 
