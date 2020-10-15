@@ -243,7 +243,7 @@ class RainTable extends Component {
         <br/>
 
         <MUIDataTable
-          title={"Last 20 entries"}
+          title={"Last 30 days"}
           style={this.props.style}
           data={this.props.data}
           columns={this.props.columns}

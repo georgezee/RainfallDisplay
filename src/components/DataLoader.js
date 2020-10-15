@@ -202,11 +202,11 @@ class DataLoader extends Component {
         // Only push the row to the data set if it matches the necessary criteria.
         if (rainDate.getFullYear() === DateUtil.currentYear()) {
 
-          // Add each date to the column list.
           let dateColumn = DateUtil.formatDate(rainDate);
-          if(allDays.indexOf(dateColumn) === -1) {
-            allDays.push(dateColumn);
-          }
+          // // Add each date to the column list.
+          // if(allDays.indexOf(dateColumn) === -1) {
+          //   allDays.push(dateColumn);
+          // }
 
           //Add the entry to the correct table cell.
           if (!tableData[siteID]) {
@@ -218,15 +218,23 @@ class DataLoader extends Component {
         }
 
       }, this);
-      let numToShow = 20;
+      let numToShow = 30;
       allDays.sort();
       allDays = allDays.slice(allDays.length - numToShow);
 
+      let columnHeadings = [];
+      for (let index = 0; index < 30; index++) {
+        let dateColumn = new Date();
+        dateColumn.setDate(dateColumn.getDate() - index);
+        columnHeadings.push(DateUtil.formatDate(dateColumn));
+      }
+      columnHeadings.reverse();
       // Append the 'Site ID' column.
-      let dayColumns = ['Site ID'].concat(allDays);
+      let dateColumns = ['Site ID'].concat(columnHeadings);
+
       let cellData =  [...new Set(tableData)];
 
-      this.setState({dayColumns : dayColumns});
+      this.setState({dayColumns : dateColumns});
       this.setState({tableData : cellData});
 
     } else {

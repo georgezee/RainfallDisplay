@@ -6,7 +6,7 @@ export class DateUtil {
 
   static formatDate(theDate) {
     let theMonth = ("0" + (theDate.getMonth() + 1)).slice(-2);
-    let theDay = ("0" + (theDate.getDay() + 1)).slice(-2);
+    let theDay = ("0" + (theDate.getDate() + 1)).slice(-2);
     let dateString = theDate.getFullYear() + "-" + theMonth + "-" + theDay;
     return dateString;
   }
