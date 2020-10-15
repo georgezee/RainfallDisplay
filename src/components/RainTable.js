@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import MUIDataTable from "mui-datatables";
 import Loader from "./Loader";
 import Logo from "./Logo";
-import ToolbarExtra from "./ToolbarExtra";
+import TableFilterOptions from "./TableFilterOptions";
 
 // // Note: When adding new columns, if the column indexes change, then we need to review the "Show Column" hack, see index.css
 // const columns = [
@@ -238,7 +238,7 @@ class RainTable extends Component {
       },
       customToolbar: () => {
         return (
-          <ToolbarExtra />
+          <TableFilterOptions />
         );
       }
 
