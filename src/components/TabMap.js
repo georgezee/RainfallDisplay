@@ -25,10 +25,12 @@ class TabMap extends Component {
     return (
       <div id='tableContainer'>
         <Logo type='inline'/>
-        {(this.props.isLoading) ? <Loader/> : ''}
-        <AreaMap sitesData={this.props.sites} clickSite={this.props.changeSite}/>
-        <br/>
-        <YearChart monthlyData={this.props.monthlyData}/>
+        <div id='mapsContainer'>
+          {(this.props.isLoading) ? <Loader/> : ''}
+          <AreaMap sitesData={this.props.sites} clickSite={this.props.changeSite}/>
+          <br/>
+          <YearChart monthlyData={this.props.monthlyData}/>
+        </div>
       </div>
     );
   }

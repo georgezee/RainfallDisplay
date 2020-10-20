@@ -75,6 +75,12 @@ a:visited {
   margin: 16px;
 }
 
+#mapsContainer {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .heading {
   margin-top: 15px!important;
   font-weight: bold!important;
