@@ -77,7 +77,7 @@ class SchoolContent extends Component {
       // Mark as viewed.
       viewed.push(key);
       localStorage.setItem('csd-views', JSON.stringify(viewed));
-      console.log('first view: ' + key)
+      // console.log('first view: ' + key)
     }
 
     const cardStyle = {

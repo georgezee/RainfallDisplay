@@ -19,9 +19,8 @@ class TabMap extends Component {
   }
 
   render() {
-
-    console.log('rendering maps ...');
-    console.log(this.props.sites);
+    // console.log('rendering maps ...');
+    // console.log(this.props.sites);
     return (
       <div id='tableContainer'>
         <Logo type='inline'/>

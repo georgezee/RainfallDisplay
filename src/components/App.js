@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Footer from "./Footer";
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import muiTheme from '../theme/muiTheme';
 import ReactGA from 'react-ga';
 import DataLoader from './DataLoader';

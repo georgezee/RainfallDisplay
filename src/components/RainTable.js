@@ -257,7 +257,6 @@ class RainTable extends Component {
     // Apply colours to each cell based on value.
     let originalColumns = this.props.columns;
     let minMax = [0,this.props.dataMax];
-    console.log(minMax);
 
     const customRender = (value, tableMeta, updateValue) => {
               let cellBG = "#ffffff";

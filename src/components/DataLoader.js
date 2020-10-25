@@ -53,7 +53,6 @@ class DataLoader extends Component {
         list[siteRow.siteid] = siteRow;
       });
 
-      console.log(list);
       this.setState({ sites: list });
 
       this.calculateRain();
@@ -178,12 +177,12 @@ class DataLoader extends Component {
       //console.log(monthlyData);
       this.setState({monthlyData : monthlyData});
     } else {
-      console.log("data not loaded");
+      //console.log("data not loaded yet");
     }
   }
 
   calculateRainTable() {
-    console.log("calculating rain table");
+    // console.log("calculating rain table");
     let dataMax = 0;
     if (this.state.rainData && this.state.sites) {
       // TODO: Use crossfilter to group/filter data instead.
@@ -212,7 +211,6 @@ class DataLoader extends Component {
 
       rainData.forEach(function(row) {
         let siteID = parseInt(row['siteId']);
-        console.log("aaa" + siteID);
         let siteName = this.getSiteByID(siteID);
 
         let rainDate = new Date(row['date']);
@@ -274,7 +272,7 @@ class DataLoader extends Component {
       this.setState({tableMax : dataMax});
 
     } else {
-      console.log("data not loaded");
+      // console.log("data not loaded yet");
     }
   }
 
@@ -295,27 +293,21 @@ class DataLoader extends Component {
   }
 
   handleClickDay() {
-    console.log("Day clicked");
     let entriesToShow = 30;
     this.setState({tableEntriesToShow: entriesToShow});
     this.setState({tableHeader: "Last 30 days"});
     this.setState({tableUnit: "day"});
     this.calculateRainTable();
-
   }
 
   handleClickWeek() {
-    console.log("Week clicked");
     let entriesToShow = 52;
     this.setState({tableEntriesToShow: entriesToShow});
     this.setState({tableHeader: "Last 52 weeks"});
-//    this.setState({tableUnit: "week"});
     this.setState({tableUnit: "week"}, () => { this.calculateRainTable() })
-    //this.calculateRainTable();
   }
 
   handleClickMonth() {
-    console.log("Month clicked");
     let entriesToShow = 12;
     this.setState({tableEntriesToShow: entriesToShow});
     this.setState({tableHeader: "Last 12 months"});
