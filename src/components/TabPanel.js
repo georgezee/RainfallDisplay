@@ -51,8 +51,8 @@ function DemoTabs(props) {
       >
         <SideBar/>
         <Tab label="Maps" aria-controls="a11y-tabpanel-0" id="a11y-tab-0" />
-        <Tab label="Daily" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
-        <Tab label="Monthly" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" />
+        <Tab label="Tables" aria-controls="a11y-tabpanel-1" id="a11y-tab-1" />
+        {/* <Tab label="Monthly" aria-controls="a11y-tabpanel-2" id="a11y-tab-2" /> */}
       </Tabs>
     </AppBar>
   );
@@ -107,14 +107,14 @@ export default function AccessibleTabs(props) {
           handleClickMonth={props.handleClickMonth}
         />
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      {/* <TabPanel value={value} index={3}>
         <Card style={{verticalAlign: 'middle', paddingTop: '10vh', height: '30vh' }}>
           <Typography component="div" >
             <GearIcon/> This page is still in progress.
           </Typography>
 
         </Card>
-      </TabPanel>
+      </TabPanel> */}
     </div>
   );
 }
