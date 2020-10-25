@@ -97,6 +97,7 @@ export default function AccessibleTabs(props) {
           // rainData={props.rainData}
           // sites={props.sites}
           tableData={props.tableData}
+          tableHeader={props.tableHeader}
           // monthlyData={props.monthlyData}
           dayColumns={props.dayColumns}
           isLoading={props.isLoading}

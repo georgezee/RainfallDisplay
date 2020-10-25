@@ -18,7 +18,8 @@ class DataLoader extends Component {
       showLiked: false,
       selectedSchool: {},
       tableEntriesToShow: 30,
-      tablePeriod: 'day',
+      tableUnit: 'day',
+      tableHeader: 'Last 30 days',
       currentSiteID : 112
      };
      // Fetch the necessary data.
@@ -184,15 +185,29 @@ class DataLoader extends Component {
   calculateRainTable() {
     console.log("calculating rain table");
     if (this.state.rainData && this.state.sites) {
-
-      // Clean data (skip sites that didn't have entries throughout the period)
-      // Todo
-      // -----
+      // TODO: Use crossfilter to group/filter data instead.
 
       let rainData = this.state.rainData;
-      let allDays = [];
       let tableData = [];
+      let daysToShow = 30;
 
+      switch (this.state.tableUnit) {
+        case 'day':
+          daysToShow = 30;
+          break;
+        case 'week':
+          // Week of year calculation depends on the day of the week.
+          // We don't want the week numbers to overlap from different years.
+          // TODO: Change so that shows full weeks without overlap.
+          daysToShow = 360;
+          break;
+        case 'month':
+          daysToShow = 365;
+          break;
+        default:
+          daysToShow = 30;
+          break;
+      }
 
       rainData.forEach(function(row) {
         let siteID = parseInt(row['siteId']);
@@ -202,33 +217,43 @@ class DataLoader extends Component {
         let rainAmount = row['rainfallMm'];
 
         // Only push the row to the data set if it matches the necessary criteria.
-        if (rainDate.getFullYear() === DateUtil.currentYear()) {
+        if (DateUtil.isRecent(rainDate, daysToShow)) {
 
-          let dateColumn = DateUtil.formatDate(rainDate);
-          // // Add each date to the column list.
-          // if(allDays.indexOf(dateColumn) === -1) {
-          //   allDays.push(dateColumn);
-          // }
-
+          let dateColumn = DateUtil.getPeriodFormat(rainDate, this.state.tableUnit);
           //Add the entry to the correct table cell.
           if (!tableData[siteID]) {
             tableData[siteID] = {};
             tableData[siteID].siteId = siteID;
             tableData[siteID]['Site ID'] = siteName;
           }
-          tableData[siteID][dateColumn] = rainAmount;
+
+          // Create a new entry if it doesn't exist ...
+          if (!tableData[siteID][dateColumn]) {
+            tableData[siteID][dateColumn] = rainAmount;
+            tableData[siteID].siteId = siteID;
+            tableData[siteID]['Site ID'] = siteName;
+          } else {
+            // ... otherwise add to the existing amount.
+            tableData[siteID][dateColumn] += rainAmount;
+          }
         }
 
       }, this);
       let numToShow = this.state.tableEntriesToShow;
-      allDays.sort();
-      allDays = allDays.slice(allDays.length - numToShow);
 
       let columnHeadings = [];
       for (let index = 0; index < numToShow; index++) {
         let dateColumn = new Date();
-        dateColumn.setDate(dateColumn.getDate() - index);
-        columnHeadings.push(DateUtil.formatDate(dateColumn));
+
+        if (this.state.tableUnit === 'day') {
+          dateColumn.setDate(dateColumn.getDate() - index);
+        } else if (this.state.tableUnit === 'week') {
+          dateColumn.setDate(dateColumn.getDate() - (index*7));
+        } else {
+          // month by default
+          dateColumn.setMonth(dateColumn.getMonth() - index);
+        }
+        columnHeadings.push(DateUtil.getPeriodFormat(dateColumn, this.state.tableUnit));
       }
       columnHeadings.reverse();
       // Append the 'Site ID' column.

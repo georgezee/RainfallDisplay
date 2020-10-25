@@ -36,6 +36,7 @@ class TabTable extends Component {
           <RainTable
             title={<AppTitleBar/>}
             data={this.props.tableData}
+            header={this.props.tableHeader}
             columns={this.props.dayColumns}
             handleClickDay={this.props.handleClickDay}
             handleClickWeek={this.props.handleClickWeek}
