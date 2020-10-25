@@ -1,14 +1,24 @@
 import React from "react";
 import { Button, ButtonGroup } from '@material-ui/core';
 
+import { useTheme } from '@material-ui/core/styles';
+
+
 function TableFilterOptions(props) {
-  const style = { display: 'inline' }
+  const theme = useTheme();
+  const secondaryLight = theme.palette.secondary.light;
+  const buttonStyle = {
+      backgroundColor: secondaryLight,
+      color: "#ffffff"
+  }
+  const filterButtonStyle = { display: 'inline' };
+
   return (
-    <div id="tableFilterOptions" style={style}>
-      <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-        <Button onClick={() => alert("Day placeholder")}>By Day</Button>
-        <Button onClick={() => alert("Week placeholder")}>Week</Button>
-        <Button onClick={() => alert("Month placeholder")}>Month</Button>
+    <div id="tableFilterOptions" style={filterButtonStyle}>
+      <ButtonGroup variant="contained" style={buttonStyle} aria-label="contained secondary button group">
+        <Button style={buttonStyle} onClick={props.handleClickDay}>By Day</Button>
+        <Button style={buttonStyle} onClick={props.handleClickWeek}>Week</Button>
+        <Button style={buttonStyle} onClick={props.handleClickMonth}>Month</Button>
       </ButtonGroup>
     </div>
   );

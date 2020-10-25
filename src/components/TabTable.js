@@ -37,6 +37,9 @@ class TabTable extends Component {
             title={<AppTitleBar/>}
             data={this.props.tableData}
             columns={this.props.dayColumns}
+            handleClickDay={this.props.handleClickDay}
+            handleClickWeek={this.props.handleClickWeek}
+            handleClickMonth={this.props.handleClickMonth}
           />
       </div>
     );

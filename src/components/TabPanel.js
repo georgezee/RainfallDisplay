@@ -100,6 +100,9 @@ export default function AccessibleTabs(props) {
           // monthlyData={props.monthlyData}
           dayColumns={props.dayColumns}
           isLoading={props.isLoading}
+          handleClickDay={props.handleClickDay}
+          handleClickWeek={props.handleClickWeek}
+          handleClickMonth={props.handleClickMonth}
         />
       </TabPanel>
       <TabPanel value={value} index={3}>

@@ -238,7 +238,11 @@ class RainTable extends Component {
       },
       customToolbar: () => {
         return (
-          <TableFilterOptions />
+          <TableFilterOptions
+            handleClickDay={this.props.handleClickDay}
+            handleClickWeek={this.props.handleClickWeek}
+            handleClickMonth={this.props.handleClickMonth}
+          />
         );
       }
 
@@ -252,7 +256,7 @@ class RainTable extends Component {
         <br/>
 
         <MUIDataTable
-          title={"Last 30 days"}
+          title={this.props.header}
           style={this.props.style}
           data={this.props.data}
           columns={this.props.columns}

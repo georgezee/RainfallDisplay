@@ -17,6 +17,8 @@ class DataLoader extends Component {
       popUpOpen: false,
       showLiked: false,
       selectedSchool: {},
+      tableEntriesToShow: 30,
+      tablePeriod: 'day',
       currentSiteID : 112
      };
      // Fetch the necessary data.
@@ -218,12 +220,12 @@ class DataLoader extends Component {
         }
 
       }, this);
-      let numToShow = 30;
+      let numToShow = this.state.tableEntriesToShow;
       allDays.sort();
       allDays = allDays.slice(allDays.length - numToShow);
 
       let columnHeadings = [];
-      for (let index = 0; index < 30; index++) {
+      for (let index = 0; index < numToShow; index++) {
         let dateColumn = new Date();
         dateColumn.setDate(dateColumn.getDate() - index);
         columnHeadings.push(DateUtil.formatDate(dateColumn));
@@ -258,6 +260,34 @@ class DataLoader extends Component {
     this.calculateRain();
   }
 
+  handleClickDay() {
+    console.log("Day clicked");
+    let entriesToShow = 30;
+    this.setState({tableEntriesToShow: entriesToShow});
+    this.setState({tableHeader: "Last 30 days"});
+    this.setState({tableUnit: "day"});
+    this.calculateRainTable();
+
+  }
+
+  handleClickWeek() {
+    console.log("Week clicked");
+    let entriesToShow = 52;
+    this.setState({tableEntriesToShow: entriesToShow});
+    this.setState({tableHeader: "Last 52 weeks"});
+//    this.setState({tableUnit: "week"});
+    this.setState({tableUnit: "week"}, () => { this.calculateRainTable() })
+    //this.calculateRainTable();
+  }
+
+  handleClickMonth() {
+    console.log("Month clicked");
+    let entriesToShow = 12;
+    this.setState({tableEntriesToShow: entriesToShow});
+    this.setState({tableHeader: "Last 12 months"});
+    this.setState({tableUnit: "month"}, () => { this.calculateRainTable() });
+  }
+
   render() {
     return (
       <Paper square className='PaperPanel'>
@@ -265,10 +295,14 @@ class DataLoader extends Component {
           rainData={this.state.rainData}
           sites={this.state.sites}
           tableData={this.state.tableData}
+          tableHeader={this.state.tableHeader}
           monthlyData={this.state.monthlyData}
           dayColumns={this.state.dayColumns}
           isLoading={this.state.isLoading}
           changeSite={this.changeSite.bind(this)}
+          handleClickDay={this.handleClickDay.bind(this)}
+          handleClickWeek={this.handleClickWeek.bind(this)}
+          handleClickMonth={this.handleClickMonth.bind(this)}
         />
       </Paper>
     );
