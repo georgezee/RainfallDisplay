@@ -184,6 +184,7 @@ class DataLoader extends Component {
 
   calculateRainTable() {
     console.log("calculating rain table");
+    let dataMax = 0;
     if (this.state.rainData && this.state.sites) {
       // TODO: Use crossfilter to group/filter data instead.
 
@@ -235,6 +236,9 @@ class DataLoader extends Component {
           } else {
             // ... otherwise add to the existing amount.
             tableData[siteID][dateColumn] += rainAmount;
+            if (tableData[siteID][dateColumn] > dataMax) {
+              dataMax = tableData[siteID][dateColumn];
+            }
           }
         }
 
@@ -263,6 +267,7 @@ class DataLoader extends Component {
 
       this.setState({dayColumns : dateColumns});
       this.setState({tableData : cellData});
+      this.setState({tableMax : dataMax});
 
     } else {
       console.log("data not loaded");
@@ -320,6 +325,7 @@ class DataLoader extends Component {
           rainData={this.state.rainData}
           sites={this.state.sites}
           tableData={this.state.tableData}
+          tableMax={this.state.tableMax}
           tableHeader={this.state.tableHeader}
           monthlyData={this.state.monthlyData}
           dayColumns={this.state.dayColumns}

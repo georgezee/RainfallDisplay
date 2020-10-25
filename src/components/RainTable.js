@@ -3,6 +3,7 @@ import MUIDataTable from "mui-datatables";
 import Loader from "./Loader";
 import Logo from "./Logo";
 import TableFilterOptions from "./TableFilterOptions";
+import {GeneralUtil} from "../util/GeneralUtils";
 
 // // Note: When adding new columns, if the column indexes change, then we need to review the "Show Column" hack, see index.css
 // const columns = [
@@ -250,6 +251,43 @@ class RainTable extends Component {
 
     console.log("rendering rain table");
 
+    // Apply colours to each cell based on value.
+    let originalColumns = this.props.columns;
+    let minMax = [0,this.props.dataMax];
+    console.log(minMax);
+
+    const customRender = (value, tableMeta, updateValue) => {
+              let cellBG = "#ffffff";
+              if (!value) {
+                value = "-";
+              } else {
+                cellBG = GeneralUtil.calculateColor(value, minMax);
+              }
+              return (
+                <div style={ {backgroundColor: cellBG, lineHeight: '30px'} }>
+                  {value}
+                </div>
+              );
+            }
+
+    let newColumns = [];
+    // Go through each column and add a render function which will set the colour.
+    originalColumns.forEach((value, index) => {
+      // Don't apply styling to the first column;
+      if (index === 0) {
+        newColumns[index] = {name: value}
+      } else {
+        newColumns[index] = {
+          name: value,
+          options: {
+            customBodyRender: customRender
+          }
+        }
+      }
+
+
+    });
+
     return (
       <div id='tableContainer'>
         <Logo/>
@@ -259,7 +297,7 @@ class RainTable extends Component {
           title={this.props.header}
           style={this.props.style}
           data={this.props.data}
-          columns={this.props.columns}
+          columns={newColumns}
           options={options}
         />
       </div>

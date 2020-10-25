@@ -65,5 +65,26 @@ export class DateUtil {
     return weekNo;
   }
 
+}
 
+export class GeneralUtil {
+  static calculateColor = (input, minMax) => {
+    if (!input) {
+      return 0;
+    }
+
+    const dataMax = minMax[1];
+    let percentage = (input / dataMax);
+    if (input > dataMax) {
+      percentage = 1;
+    }
+    // We want to limit opacity to 80% of total.
+    percentage = percentage * 0.8;
+
+    let baseColour = "#42a5f5"; // Primary Main
+    let opacityVal = Math.floor(255 * percentage);
+    let opacityHex = ("0" + opacityVal.toString(16)).slice(-2);
+    //console.log("input:" + input + ", percent:" + percentage + ", opacity:" + opacityVal + ", hex:" + opacityHex);
+    return baseColour + opacityHex;
+  }
 }
