@@ -212,6 +212,7 @@ class DataLoader extends Component {
 
       rainData.forEach(function(row) {
         let siteID = parseInt(row['siteId']);
+        console.log("aaa" + siteID);
         let siteName = this.getSiteByID(siteID);
 
         let rainDate = new Date(row['date']);
@@ -263,7 +264,10 @@ class DataLoader extends Component {
       // Append the 'Site ID' column.
       let dateColumns = ['Site ID'].concat(columnHeadings);
 
+      // Convert data set to array without gaps.
       let cellData =  [...new Set(tableData)];
+      // Remove resulting first, empty element.
+      if (!cellData[0]) { cellData.shift(); }
 
       this.setState({dayColumns : dateColumns});
       this.setState({tableData : cellData});
