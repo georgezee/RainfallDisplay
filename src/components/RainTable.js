@@ -212,7 +212,7 @@ class RainTable extends Component {
   render() {
     const options = {
       pagination: false,
-      search: false,
+      search: true,
       viewColumns: false,
       filter: false,
       selectableRows: 'none',
