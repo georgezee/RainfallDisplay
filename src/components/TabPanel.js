@@ -9,8 +9,8 @@ import SideBar from './SideBar';
 //import SchoolTable from './SchoolTable';
 import TabMap from './TabMap';
 import TabTable from './TabTable';
-import GearIcon from '@material-ui/icons/Settings';
-import { Card, Typography } from '@material-ui/core';
+// import GearIcon from '@material-ui/icons/Settings';
+// import { Card, Typography } from '@material-ui/core';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
