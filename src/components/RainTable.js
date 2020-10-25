@@ -193,13 +193,16 @@ class RainTable extends Component {
   }
 
   // TODO: Determine correct flow for table updating.
+  // Ensure that the component is only updating when needed.
   shouldComponentUpdate() {
-    if (this.props.data) {
-      return false;
-    } else {
-      return true;
-    }
+    // console.log("Rain Table component update checked ...");
+    // if (this.props.data) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
 
+    return true;
   }
 
   onPopUpClose = event => {
