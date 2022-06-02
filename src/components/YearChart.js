@@ -23,6 +23,8 @@ export default class YearChart extends Component {
           <Bar type="monotone" dataKey="2018" fill="#aad3df" />
           <Bar type="monotone" dataKey="2019" fill="#add19e" />
           <Bar type="monotone" dataKey="2020" fill="#f8d19d" />
+          <Bar type="monotone" dataKey="2021" fill="#dda0dd" />
+          <Bar type="monotone" dataKey="2022" fill="#eb9595"/>
         </BarChart>
       </ResponsiveContainer>
     )
