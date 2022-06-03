@@ -5,8 +5,8 @@ import MarkerPopup from './MarkerPopup';
 export default class SiteMarker extends Component {
 
   calculateCircleSize = (input) => {
-    let dataMax = 1000;
-    let sizeMax = 300;
+    let dataMax = 300;
+    let sizeMax = 400;
 
     if (!input) {
       return 20;
