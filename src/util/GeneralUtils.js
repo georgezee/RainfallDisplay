@@ -6,7 +6,7 @@ export class DateUtil {
 
   static formatDate(theDate) {
     let theMonth = ("0" + (theDate.getMonth() + 1)).slice(-2);
-    let theDay = ("0" + (theDate.getDate() + 1)).slice(-2);
+    let theDay = ("0" + (theDate.getDate())).slice(-2);
     let dateString = theDate.getFullYear() + "-" + theMonth + "-" + theDay;
     return dateString;
   }
@@ -29,7 +29,7 @@ export class DateUtil {
   static getPeriodFormat(theDate, unit) {
     let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     if (unit === 'day') {
-      let theDay = ("0" + (theDate.getDate() + 1)).slice(-2);
+      let theDay = ("0" + (theDate.getDate())).slice(-2);
       return monthNames[theDate.getMonth()] + " " + theDay;
     } else if (unit === 'week') {
       let weekNum = this.getWeekNumber(theDate) + "";
