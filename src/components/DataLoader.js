@@ -21,10 +21,10 @@ class DataLoader extends Component {
       tableUnit: 'day',
       tableHeader: 'Last 30 days',
       currentSiteID : 112
-     };
+    };
      // Fetch the necessary data.
-     this.loadRainData();
-     this.loadSiteData();
+    this.loadRainData();
+    this.loadSiteData();
   }
 
 

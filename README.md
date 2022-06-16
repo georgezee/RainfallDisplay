@@ -38,7 +38,7 @@ cd RainfallDisplay
 ```
 3. Download all the project dependencies (will take a while):
 ```
-npm update
+npm install
 ```
 4. Run the app:
 ```
