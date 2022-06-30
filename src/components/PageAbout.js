@@ -7,8 +7,8 @@ import Button from "@material-ui/core/Button";
 import CloseIcon from '@material-ui/icons/Close';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 import Link from '@material-ui/core/Link';
-//import Alert from '@material-ui/lab/Alert';
 import Logo from './Logo';
+import License from './License';
 
 class PageAbout extends React.Component {
 
@@ -60,6 +60,13 @@ class PageAbout extends React.Component {
               If you wish to contact us, or would like to join our team of rainfall data collectors, email us at
               &nbsp;<Link href="mailto:houtbayrain@gmail.com">houtbayrain@gmail.com</Link>
 
+              <br/><br/>
+              <div style={{ fontSize: '90%' }}>
+                <div style={{ textAlign: 'center', paddingTop: '20px', paddingBottom: '10px' }}>
+                  <License />
+                </div>
+                The information on this site is provided under the <Link href="https://creativecommons.org/licenses/by-sa/3.0/za/">Creative Commons</Link> license that allows sharing with attribution.
+              </div>
 
             </DialogContent>
             <DialogActions className="aboutClose">
