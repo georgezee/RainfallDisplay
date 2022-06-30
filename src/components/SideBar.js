@@ -7,13 +7,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import CodeIcon from '@material-ui/icons/Code';
-import EditIcon from '@material-ui/icons/Edit';
 import MailIcon from '@material-ui/icons/Mail';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';
 import SchoolIcon from '@material-ui/icons/School';
 import Logo from "./Logo";
 import PageAbout from "./PageAbout";
 import PageOtherResources from "./PageOtherResources";
+import PageContact from "./PageContact";
 
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -47,6 +47,12 @@ class SideBar extends Component {
     });
   };
 
+  toggleContact = (open) => () => {
+    this.setState({
+      contactOpen: open,
+    });
+  };
+
   render() {
 
     const classes = {
@@ -73,19 +79,11 @@ class SideBar extends Component {
               <ListItemText primary="Get the Code!" />
             </ListItem>
           </Link>
-          <Link href="mailto:houtbayrain@gmail.com">
-            <ListItem button key="join">
-              <ListItemIcon><EditIcon /></ListItemIcon>
-              <ListItemText primary="Join" />
-            </ListItem>
-          </Link>
           <Divider />
-          <Link href="mailto:houtbayrain@gmail.com">
-            <ListItem button key="contact-us">
+          <ListItem button key="datainfo" onClick={this.toggleContact(true)} className={buttonClass}>
               <ListItemIcon><MailIcon /></ListItemIcon>
               <ListItemText primary="Contact Us" />
-            </ListItem>
-          </Link>
+          </ListItem>
           <Divider />
         </List>
       </div>
@@ -114,6 +112,7 @@ class SideBar extends Component {
         </Drawer>
         <PageAbout open={this.state.aboutOpen} handleClose={this.toggleAbout(false)} />
         <PageOtherResources open={this.state.aboutDataOpen} handleClose={this.toggleAboutData(false)} />
+        <PageContact open={this.state.contactOpen} handleClose={this.toggleContact(false)} />
       </div>
     );
   }
