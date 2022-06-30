@@ -18,7 +18,7 @@ export class DateUtil {
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays < days) {
+    if (diffDays <= days) {
       return true;
     } else {
       return false;
