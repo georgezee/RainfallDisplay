@@ -136,11 +136,16 @@ class DataLoader extends Component {
 
         // Calculate the annual rain
         if (rainDate.getFullYear() === currentYear) {
-          if (newSites[siteID].annualTotal) {
-            newSites[siteID].annualTotal += rainAmount;
-          } else {
-            newSites[siteID].annualTotal = rainAmount;
+          try {
+            if (newSites[siteID].annualTotal) {
+              newSites[siteID].annualTotal += rainAmount;
+            } else {
+              newSites[siteID].annualTotal = rainAmount;
+            }
+          } catch(err) {
+            console.log("No siteID found for " + siteID + " : " + err.message);
           }
+
         }
       });
 
@@ -277,8 +282,12 @@ class DataLoader extends Component {
   }
 
   getSiteByID(searchID) {
-    let matchingSite = this.state.sites.filter((site, index) => {return site.siteid === searchID} )
-    return matchingSite[0].vanityName;
+    try {
+      let matchingSite = this.state.sites.filter((site, index) => {return site.siteid === searchID} )
+      return matchingSite[0].vanityName;
+    } catch(err) {
+      console.log("No name found for " + searchID + " : " + err.message);
+    }
   }
 
   getSiteByName(vanityName) {
