@@ -26,7 +26,8 @@ class SideBar extends Component {
     bottom: false,
     right: false,
     aboutOpen: false,
-    aboutDataOpen: false
+    aboutDataOpen: false,
+    contactOpen: false
   };
 
   toggleDrawer = (side, open) => () => {
