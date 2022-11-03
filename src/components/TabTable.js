@@ -30,6 +30,8 @@ class TabTable extends Component {
             handleClickDay={this.props.handleClickDay}
             handleClickWeek={this.props.handleClickWeek}
             handleClickMonth={this.props.handleClickMonth}
+            handleClickPrev={this.props.handleClickPrev}
+            handleClickNext={this.props.handleClickNext}
           />
       </div>
     );

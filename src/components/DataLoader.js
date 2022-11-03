@@ -20,7 +20,8 @@ class DataLoader extends Component {
       tableEntriesToShow: 30,
       tableUnit: 'day',
       tableHeader: 'Last 30 days',
-      currentSiteID : 112
+      currentSiteID : 112,
+      offset: -30,
     };
      // Fetch the necessary data.
     this.loadRainData();
@@ -195,6 +196,7 @@ class DataLoader extends Component {
       let rainData = this.state.rainData;
       let tableData = [];
       let daysToShow = 30;
+      let fromDays = 60 + this.state.offset;
 
       switch (this.state.tableUnit) {
         case 'day':
@@ -222,7 +224,7 @@ class DataLoader extends Component {
         let rainAmount = row['rainfallMm'];
 
         // Only push the row to the data set if it matches the necessary criteria.
-        if (DateUtil.isRecent(rainDate, daysToShow)) {
+        if (DateUtil.isBetweenDates(rainDate, fromDays, daysToShow)) {
 
           let dateColumn = DateUtil.getPeriodFormat(rainDate, this.state.tableUnit);
           //Add the entry to the correct table cell.
@@ -252,6 +254,7 @@ class DataLoader extends Component {
       let columnHeadings = [];
       for (let index = 0; index < numToShow; index++) {
         let dateColumn = new Date();
+        dateColumn.setDate(dateColumn.getDate() - (fromDays-daysToShow));
 
         if (this.state.tableUnit === 'day') {
           dateColumn.setDate(dateColumn.getDate() - index);
@@ -306,6 +309,7 @@ class DataLoader extends Component {
     this.setState({tableEntriesToShow: entriesToShow});
     this.setState({tableHeader: "Last 30 days"});
     this.setState({tableUnit: "day"});
+    this.setState({offset: -30});
     this.calculateRainTable();
   }
 
@@ -314,6 +318,7 @@ class DataLoader extends Component {
     this.setState({tableEntriesToShow: entriesToShow});
     this.setState({tableHeader: "Last 52 weeks"});
     this.setState({tableUnit: "week"}, () => { this.calculateRainTable() })
+    this.setState({offset: -30});
   }
 
   handleClickMonth() {
@@ -321,6 +326,57 @@ class DataLoader extends Component {
     this.setState({tableEntriesToShow: entriesToShow});
     this.setState({tableHeader: "Last 12 months"});
     this.setState({tableUnit: "month"}, () => { this.calculateRainTable() });
+    this.setState({offset: -30});
+  }
+
+  handleClickNext() {
+    this.setState(prevState => {
+      // Don't let the offset go into the future.
+      if (prevState.offset > -30) {
+        var newOffset;
+        switch (this.state.tableUnit) {
+          case 'day':
+            newOffset = prevState.offset - 30;
+            break;
+          case 'week':
+            newOffset = prevState.offset - 360;
+            break;
+          case 'month':
+            newOffset = prevState.offset - 360;
+            break;
+          default:
+            newOffset = prevState.offset - 30;
+            break;
+        }
+
+        return {offset: newOffset}
+      }
+    }, () => {
+      this.calculateRainTable();
+    });
+  }
+
+  handleClickPrev() {
+    this.setState(prevState => {
+      var newOffset;
+      switch (this.state.tableUnit) {
+        case 'day':
+          newOffset = prevState.offset + 30;
+          break;
+        case 'week':
+          newOffset = prevState.offset + 360;
+          break;
+        case 'month':
+          newOffset = prevState.offset + 360;
+          break;
+        default:
+          newOffset = prevState.offset + 30;
+          break;
+      }
+      return {offset: newOffset}
+    }, () => {
+      this.calculateRainTable();
+    });
   }
 
   render() {
@@ -339,6 +395,8 @@ class DataLoader extends Component {
           handleClickDay={this.handleClickDay.bind(this)}
           handleClickWeek={this.handleClickWeek.bind(this)}
           handleClickMonth={this.handleClickMonth.bind(this)}
+          handleClickPrev={this.handleClickPrev.bind(this)}
+          handleClickNext={this.handleClickNext.bind(this)}
         />
       </Paper>
     );

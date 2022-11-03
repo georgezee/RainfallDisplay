@@ -4,6 +4,9 @@ import Loader from "./Loader";
 import Logo from "./Logo";
 import TableFilterOptions from "./TableFilterOptions";
 import {GeneralUtil} from "../util/GeneralUtils";
+import IconButton from '@material-ui/core/IconButton';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
 // // Note: When adding new columns, if the column indexes change, then we need to review the "Show Column" hack, see index.css
 // const columns = [
@@ -290,13 +293,26 @@ class RainTable extends Component {
 
     });
 
+    let fullHeader = (
+      <div style={ {lineHeight: '30px'} }>
+        <IconButton className="arrows" aria-label="left" onClick={this.props.handleClickPrev}>
+          <ArrowLeftIcon fontSize="large"></ArrowLeftIcon>
+          Previous
+        </IconButton>
+        <IconButton className="arrows" aria-label="right" onClick={this.props.handleClickNext}>
+          Next
+          <ArrowRightIcon fontSize="large"></ArrowRightIcon>
+        </IconButton>
+      </div>
+    );
+
     return (
       <div id='tableContainer'>
         <Logo/>
         <br/>
 
         <MUIDataTable
-          title={this.props.header}
+          title={fullHeader}
           style={this.props.style}
           data={this.props.data}
           columns={newColumns}

@@ -25,6 +25,21 @@ export class DateUtil {
     }
   }
 
+  // Return whether a date is within the last X days.
+  static isBetweenDates(theDate, fromDays, daysToShow) {
+    const date1 = theDate;
+    const date2 = new Date();
+    date2.setDate(date2.getDate() - fromDays)
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= daysToShow) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // Return a date formatted for the table column headings, depending on the unit scale.
   static getPeriodFormat(theDate, unit) {
     let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

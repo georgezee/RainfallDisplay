@@ -105,6 +105,8 @@ export default function AccessibleTabs(props) {
           handleClickDay={props.handleClickDay}
           handleClickWeek={props.handleClickWeek}
           handleClickMonth={props.handleClickMonth}
+          handleClickPrev={props.handleClickPrev}
+          handleClickNext={props.handleClickNext}
         />
       </TabPanel>
       {/* <TabPanel value={value} index={3}>

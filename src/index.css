@@ -215,3 +215,8 @@ a:visited {
 .menuIcon {
   color: #fff!important;
 }
+
+.arrows {
+  font-size: 1.2rem!important;
+  display: inline;
+}
