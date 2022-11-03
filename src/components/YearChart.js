@@ -11,6 +11,28 @@ export default class YearChart extends Component {
       // console.log("rendering year chart ...");
       // console.log(monthlyData);
 
+    let yearList = [
+      ["2018", "#aad3df"],
+      ["2019", "#add19e"],
+      ["2020", "#f8d19d"],
+      ["2021", "#dda0dd"],
+      ["2022", "#eb9595"],
+      ["2023", "#9ab7d3"],
+      ["2024", "#e3a7c0"],
+    ]
+
+    const years = yearList.map((item, index) => {
+      let year = item[0];
+      let colour = item[1];
+
+      let currentYear = new Date().getFullYear();
+
+      // Only show years that are current or in the past, based on user device.
+      if (year <= currentYear) {
+        return <Bar type="monotone" dataKey={year} fill={colour} />
+      }
+    });
+
     return (
       <ResponsiveContainer width='100%' aspect={2.5/1.0}>
         <BarChart data={monthlyData}
@@ -20,11 +42,7 @@ export default class YearChart extends Component {
           <YAxis label={{ value: 'Rain (mm)', angle: -90, position: 'insideLeft' }} />
           <Tooltip />
           <Legend />
-          <Bar type="monotone" dataKey="2018" fill="#aad3df" />
-          <Bar type="monotone" dataKey="2019" fill="#add19e" />
-          <Bar type="monotone" dataKey="2020" fill="#f8d19d" />
-          <Bar type="monotone" dataKey="2021" fill="#dda0dd" />
-          <Bar type="monotone" dataKey="2022" fill="#eb9595"/>
+          {years}
         </BarChart>
       </ResponsiveContainer>
     )
