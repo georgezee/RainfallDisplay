@@ -220,6 +220,11 @@ class DataLoader extends Component {
         let siteID = parseInt(row['siteId']);
         let siteName = this.getSiteByID(siteID);
 
+        // Skip data for rows that don't have a Site ID defined.
+        if (siteName == null) {
+          return;
+        }
+
         let rainDate = new Date(row['date']);
         let rainAmount = row['rainfallMm'];
 
