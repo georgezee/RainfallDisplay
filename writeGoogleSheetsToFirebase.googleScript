@@ -6,6 +6,13 @@ function writeDataToFirebase() {
   var data = sheet.getDataRange().getValues();
   var dataToImport = {};
 
+  // The following values should be added to Project Settings -> Script Properites as variables.
+  var serviceAccountEmail = PropertiesService.getScriptProperties().getProperty('SERVICE_ACCOUNT_EMAIL');
+  var privateKey = PropertiesService.getScriptProperties().getProperty('PRIVATE_KEY');
+  privateKey = privateKey.replace(/\\n/g, '\n');
+
+  var authToken = getAuthToken(serviceAccountEmail, privateKey);
+
   for(var i = 1; i < data.length; i++) {
 
     var programName = data[i][1];
@@ -55,7 +62,7 @@ function writeDataToFirebase() {
 
     sites[programName] = {};
 
-    skipColumns=['owner', 'email'];
+    skipColumns=['owner', 'email', 'address'];
     for(var y = 0; y < 100; y++) {
       var columnName = data[0][y]
       if ((columnName) && (columnName.length > 0)) {
@@ -74,12 +81,8 @@ function writeDataToFirebase() {
     rainData: dataToImport
   };
 
-  // TODO: Use more secure auth method as per https://sites.google.com/site/scriptsexamples/new-connectors-to-google-services/firebase/tutorials/authenticate-with-a-service-account
-  // Until this is complete, do not commit this token to any shared repo.
   var firebaseUrl = "https://rainfall-data-536ee.firebaseio.com/";
-  var token = "[FIREBASE-SECRET-GOES-HERE]";
-  //var base = FirebaseApp.getDatabaseByUrl(firebaseUrl, token);
-  var base = FirebaseApp.getDatabaseByUrl(firebaseUrl);
+  var base = FirebaseApp.getDatabaseByUrl(firebaseUrl, authToken);
   base.setData("", dataComplete);
 }
 
@@ -92,4 +95,35 @@ function toTitleCase(str) {
 
 function decapitalizeFirstLetter(string) {
     return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
+function getAuthToken(serviceAccountEmail, privateKey) {
+  var header = {
+    "alg": "RS256",
+    "typ": "JWT"
+  };
+
+  var now = Math.floor(new Date().getTime() / 1000);
+  var payload = {
+    "iss": serviceAccountEmail,
+    "sub": serviceAccountEmail,
+    "aud": "https://oauth2.googleapis.com/token",
+    "iat": now,
+    "exp": now + 3600,
+    "scope": "https://www.googleapis.com/auth/firebase.database https://www.googleapis.com/auth/userinfo.email"
+  };
+
+  var unsignedToken = Utilities.base64EncodeWebSafe(JSON.stringify(header)) + "." + Utilities.base64EncodeWebSafe(JSON.stringify(payload));
+  var signature = Utilities.computeRsaSha256Signature(unsignedToken, privateKey);
+  var signedToken = unsignedToken + "." + Utilities.base64EncodeWebSafe(signature);
+
+  var tokenResponse = UrlFetchApp.fetch('https://oauth2.googleapis.com/token', {
+    method: 'post',
+    payload: {
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: signedToken
+    }
+  });
+  var token = JSON.parse(tokenResponse.getContentText());
+  return token.access_token;
 }
