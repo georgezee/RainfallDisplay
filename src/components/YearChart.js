@@ -1,58 +1,86 @@
 import React, { Component } from 'react'
-//import { LineChart, Line } from 'recharts';
-//const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
+import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+const YEAR_LIST = [
+  ["2020", "#f8d19d"],
+  ["2021", "#dda0dd"],
+  ["2022", "#eb9595"],
+  ["2023", "#9ab7d3"],
+  ["2024", "#e3a7c0"],
+  ["2025", "#b8f3dd"],
+  ["2026", "#90ee90"],
+  ["2027", "#d0b3ff"],
+  ["2028", "#ffd5b1"],
+  ["2029", "#ffe6f2"],
+  ["2030", "#b7e5d4"],
+  ["2031", "#c7e9b4"],
+  ["2032", "#fde0dd"],
+];
 
 export default class YearChart extends Component {
 
-  render() {
-    let monthlyData = this.props.monthlyData;
-      // console.log("rendering year chart ...");
-      // console.log(monthlyData);
-
-    let yearList = [
-      ["2020", "#f8d19d"],
-      ["2021", "#dda0dd"],
-      ["2022", "#eb9595"],
-      ["2023", "#9ab7d3"],
-      ["2024", "#e3a7c0"],
-      ["2025", "#b8f3dd"], // Soft, light blue
-      ["2026", "#90ee90"], // Pastel green
-      ["2027", "#d0b3ff"], // Light purple
-      ["2028", "#ffd5b1"], // Light orange
-      ["2029", "#ffe6f2"], // Soft pink
-      ["2030", "#b7e5d4"], // Light teal
-      ["2031", "#c7e9b4"], // Light mint green
-      ["2032", "#fde0dd"], // Soft peach
-    ];
-
-    const years = yearList.map((item, index) => {
-      let year = item[0];
-      let colour = item[1];
-
-      let currentYear = new Date().getFullYear();
-
-      // Only show years that are current or in the past, based on user device.
+  constructor(props) {
+    super(props);
+    const currentYear = new Date().getFullYear().toString();
+    const initialChecked = {};
+    YEAR_LIST.forEach(([year]) => {
       if (year <= currentYear) {
-        return <Bar type="monotone" dataKey={year} fill={colour} />
-      } else {
-        return null;
+        initialChecked[year] = true;
       }
     });
+    this.state = { checkedYears: initialChecked };
+  }
+
+  handleToggle(year) {
+    this.setState(prev => ({
+      checkedYears: { ...prev.checkedYears, [year]: !prev.checkedYears[year] }
+    }));
+  }
+
+  render() {
+    const { monthlyData } = this.props;
+    const { checkedYears } = this.state;
+    const currentYear = new Date().getFullYear().toString();
+
+    const visibleYears = YEAR_LIST.filter(([year]) => year <= currentYear);
+
+    const bars = visibleYears.map(([year, colour]) =>
+      checkedYears[year]
+        ? <Bar key={year} dataKey={year} fill={colour} />
+        : null
+    );
+
+    const checkboxes = visibleYears.map(([year, colour]) => (
+      <FormControlLabel
+        key={year}
+        label={year}
+        control={
+          <Checkbox
+            checked={!!checkedYears[year]}
+            onChange={() => this.handleToggle(year)}
+            style={{ color: colour }}
+          />
+        }
+      />
+    ));
 
     return (
-      <ResponsiveContainer width='100%' aspect={2.5/1.0}>
-        <BarChart data={monthlyData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month"/>
-          <YAxis label={{ value: 'Rain (mm)', angle: -90, position: 'insideLeft' }} />
-          <Tooltip />
-          <Legend />
-          {years}
-        </BarChart>
-      </ResponsiveContainer>
-    )
-  };
+      <div>
+        <ResponsiveContainer width='100%' aspect={2.5 / 1.0}>
+          <BarChart data={monthlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis label={{ value: 'Rain (mm)', angle: -90, position: 'insideLeft' }} />
+            <Tooltip />
+            {bars}
+          </BarChart>
+        </ResponsiveContainer>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', padding: '0 16px 16px' }}>
+          {checkboxes}
+        </div>
+      </div>
+    );
+  }
 }
