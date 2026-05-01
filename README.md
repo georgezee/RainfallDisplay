@@ -38,7 +38,7 @@ cd RainfallDisplay
 ```
 3. Download all the project dependencies (will take a while):
 ```
-npm install
+ npm install --legacy-peer-deps
 ```
 4. Run the app:
 ```
