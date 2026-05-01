@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, LabelList, ResponsiveContainer } from 'recharts';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
@@ -37,7 +37,7 @@ export default function SiteComparisonChart({ rainData, sites }) {
   }
 
   return (
-    <div>
+    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
         <IconButton onClick={() => setSelectedYear(y => y - 1)} disabled={selectedYear <= MIN_YEAR}>
           <ArrowLeftIcon />
@@ -48,12 +48,14 @@ export default function SiteComparisonChart({ rainData, sites }) {
         </IconButton>
       </div>
       <ResponsiveContainer width='100%' aspect={2.5 / 1.0}>
-        <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
+        <BarChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 60 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" angle={-35} textAnchor="end" interval={0} />
           <YAxis label={{ value: 'Rain (mm)', angle: -90, position: 'insideLeft' }} />
           <Tooltip formatter={(value) => [`${value} mm`, 'Total Rainfall']} />
-          <Bar dataKey="rainfall" fill="#534bae" name="Total Rainfall (mm)" />
+          <Bar dataKey="rainfall" fill="#534bae" name="Total Rainfall (mm)">
+            <LabelList dataKey="rainfall" position="top" />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
