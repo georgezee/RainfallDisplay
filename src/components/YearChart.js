@@ -12,8 +12,6 @@ export default class YearChart extends Component {
       // console.log(monthlyData);
 
     let yearList = [
-      ["2018", "#aad3df"],
-      ["2019", "#add19e"],
       ["2020", "#f8d19d"],
       ["2021", "#dda0dd"],
       ["2022", "#eb9595"],
