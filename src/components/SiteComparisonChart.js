@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import {getSiteDisplayName} from '../util/SiteNames';
 
 const MIN_YEAR = 2020;
 
@@ -27,12 +28,12 @@ export default function SiteComparisonChart({ rainData, sites }) {
     sites.forEach(site => {
       if (site && siteTotals[site.siteid] > 0) {
         chartData.push({
-          name: site.vanityName,
+          name: getSiteDisplayName(site.vanityName),
           rainfall: Math.round(siteTotals[site.siteid] * 10) / 10,
         });
       }
     });
-    chartData.sort((a, b) => b.rainfall - a.rainfall);
+    chartData.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   return (

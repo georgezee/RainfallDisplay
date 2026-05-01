@@ -5,6 +5,7 @@ import TabPanel from './TabPanel';
 import fire from "./firebase";
 import crossfilter from "crossfilter2";
 import {DateUtil} from "../util/GeneralUtils";
+import {getSiteDisplayName} from "../util/SiteNames";
 
 
 class DataLoader extends Component {
@@ -292,7 +293,7 @@ class DataLoader extends Component {
   getSiteByID(searchID) {
     try {
       let matchingSite = this.state.sites.filter((site, index) => {return site.siteid === searchID} )
-      return matchingSite[0].vanityName;
+      return getSiteDisplayName(matchingSite[0].vanityName);
     } catch(err) {
       console.log("No name found for " + searchID + " : " + err.message);
     }
