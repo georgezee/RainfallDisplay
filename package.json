@@ -6,9 +6,8 @@
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
-    "@react-firebase/database": "^0.3.11",
     "crossfilter2": "^1.5.3",
-    "firebase": "^5.10.0",
+    "firebase": "^8.10.1",
     "history": "^4.10.1",
     "leaflet": "^1.6.0",
     "mui-datatables": "^3.5.0",
@@ -18,15 +17,14 @@
     "react-leaflet": "^2.7.0",
     "react-meta-tags": "^0.7.4",
     "react-router": "^5.2.0",
-    "react-router-sitemap": "^1.2.0",
     "react-scripts": "^3.4.1",
     "react-web-share-button": "^1.0.1",
     "recharts": "^1.8.5",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sitemap-generate": "babel-node src/sitemap-generate.js"
