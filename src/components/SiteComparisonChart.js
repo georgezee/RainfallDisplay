@@ -53,7 +53,7 @@ export default function SiteComparisonChart({ rainData, sites }) {
           <XAxis dataKey="name" angle={-35} textAnchor="end" interval={0} />
           <YAxis label={{ value: 'Rain (mm)', angle: -90, position: 'insideLeft' }} />
           <Tooltip formatter={(value) => [`${value} mm`, 'Total Rainfall']} />
-          <Bar dataKey="rainfall" fill="#42a5f5" name="Total Rainfall (mm)" />
+          <Bar dataKey="rainfall" fill="#534bae" name="Total Rainfall (mm)" />
         </BarChart>
       </ResponsiveContainer>
     </div>
